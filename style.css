@@ -272,6 +272,12 @@ a {
   gap: 24px;
 }
 
+.six-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 24px;
+}
 .curators-head {
   display: flex;
   justify-content: space-between;
