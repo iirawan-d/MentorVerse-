@@ -430,6 +430,66 @@
         grid-template-columns: 1fr;
       }
     }
+
+    
+/* Footer */
+.fp-footer {
+  background: #dce7e5;
+  padding: 36px 40px;
+  margin-top: auto;
+}
+
+.fp-footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.fp-footer-left {
+  max-width: 380px;
+}
+
+.fp-footer-brand {
+  font-size: 22px;
+  font-weight: 800;
+  color: #137f68;
+  margin-bottom: 10px;
+  letter-spacing: -0.4px;
+}
+
+.fp-footer-copy {
+  font-size: 12px !important;
+  color: #5f7075;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+}
+
+.fp-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+}
+
+.fp-footer-links a {
+  font-size: 12px;
+  font-weight: 600;
+  color: #34444a;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: color 0.2s ease;
+}
+
+.fp-footer-links a:hover {
+  color: #137f68;
+}
+
+
+
   </style>
 </head>
 <body>
@@ -538,13 +598,13 @@
             </div>
           </div>
         </div>
-
+<!-- edit -->
         <div class="right-stack">
           <div class="mini-card">
             <h3>Academic Targets</h3>
             <div class="stat-big">3.82</div>
             <p>Current GPA with a strong upward trend. Stay focused on your advanced modules to maintain honors status.</p>
-
+<!-- edit -->
             <div class="goal-row">
               <div class="goal-box">
                 <span>Min</span>
@@ -560,7 +620,7 @@
               </div>
             </div>
           </div>
-
+<!-- edit -->
           <div class="mini-card">
             <h3>Career Path</h3>
             <p style="margin-bottom: 14px;">Primary interests and future industry direction.</p>
@@ -573,7 +633,7 @@
                 <span class="tag gray">+ Add Interest</span>
               </div>
             </div>
-
+<!-- edit -->
             <div class="field full">
               <label>Target Industry</label>
               <select>
@@ -597,14 +657,17 @@
     </main>
   </div>
 
-    <!-- Footer -->
-  <footer class="as-footer">
-    <div class="as-footer-inner">
-      <div class="as-footer-left">
-        <div class="as-footer-brand">MentorVerse</div>
-        <p>&copy; 2026 MENTORVERSE. UNDER THE SUPERVISION OF THE MINISTRY OF EDUCATION.</p>
+
+  <!-- Footer -->
+  <footer class="fp-footer">
+    <div class="fp-footer-inner">
+      <div class="fp-footer-left">
+        <div class="fp-footer-brand">MentorVerse</div>
+        <p class="fp-footer-copy">
+          &copy; 2026 MENTORVERSE.
+        </p>
       </div>
-      <div class="as-footer-links">
+      <div class="fp-footer-links">
             <a href="Home-page.html">HOME</a>
             <a href="faq-page.html">FAQ</a>
             <a href="contact-us-page.html">CONTACT US</a>
