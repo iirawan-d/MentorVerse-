@@ -132,9 +132,9 @@ a {
 }
 
 .hero h1 {
-  font-size: 72px;
+  font-size: 50px;
   line-height: 1.05;
-  max-width: 760px;
+  max-width: 900px;
   margin-bottom: 24px;
   letter-spacing: -1.8px;
 }
@@ -144,7 +144,7 @@ a {
 }
 
 .hero-text {
-  max-width: 650px;
+  max-width: 1000px;
   font-size: 24px;
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.88);
@@ -208,7 +208,7 @@ a {
 /* Split section */
 .split-section {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
+  grid-template-columns: 1.1fr 0fr;
   gap: 50px;
   align-items: start;
 }
