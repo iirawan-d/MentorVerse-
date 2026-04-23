@@ -1,6 +1,5 @@
 /* =========================
    ADVISOR DASHBOARD PAGES
-   Self-contained CSS
 ========================= */
 
 /* Reset & Base */
@@ -235,7 +234,7 @@ body.adv-page {
 }
 
 .adv-eyebrow {
-  font-size: 12px;
+  font-size: 30px;
   font-weight: 800;
   color: #137f68;
   letter-spacing: 1.6px;
