@@ -44,7 +44,8 @@ a {
   letter-spacing: -0.8px;
 }
 
-.nav-links {
+.nav-links 
+{
   display: flex;
   gap: 34px;
   font-size: 15px;
@@ -52,7 +53,8 @@ a {
 }
 
 .nav-links a:hover,
-.login-link:hover {
+.login-link:hover 
+{
   color: #137f68;
 }
 
