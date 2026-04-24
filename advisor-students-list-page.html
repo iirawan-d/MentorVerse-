@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MentorVerse | Advisor - Students List</title>
+  <title>Students List</title>
   <meta name="description" content="Advisor dashboard showing assigned students overview with academic status and risk analysis." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,17 +18,14 @@
     <!-- Sidebar -->
     <aside class="adv-sidebar">
       <div class="adv-sidebar-brand">
-        <a href="index.html" class="adv-logo">MentorVerse</a>
-        <p class="adv-logo-title">Academic Curator</p>
+        <a href="Home-page.html" class="adv-logo">MentorVerse</a>
+        <p class="adv-logo-title">Student List</p>
         <p class="adv-logo-sub">University Portal</p>
       </div>
 
       <nav class="adv-sidebar-nav">
-        <a href="advisor-students.html" class="adv-nav-item active" id="nav-dashboard">
-          <i class="fa-solid fa-th-large"></i> Dashboard
-        </a>
-        <a href="advisor-performance.html" class="adv-nav-item" id="nav-performance">
-          <i class="fa-solid fa-chart-line"></i> Performance
+        <a href="advisor-students-list-page.html" class="adv-nav-item active" id="nav-dashboard">
+          <i class="fa-solid fa-th-large"></i> Student List
         </a>
         <a href="#" class="adv-nav-item" id="nav-notifications">
           <i class="fa-solid fa-bell"></i> Notifications
@@ -46,18 +43,13 @@
       <header class="adv-topbar">
         <div class="adv-topbar-left">
           <a href="index.html" class="adv-topbar-brand">MentorVerse</a>
-          <nav class="adv-topbar-links">
-            <a href="#">About</a>
-            <a href="contact.html">Contact</a>
-          </nav>
         </div>
         <div class="adv-topbar-right">
           <button class="adv-icon-btn" id="notif-btn"><i class="fa-solid fa-bell"></i></button>
-          <button class="adv-icon-btn" id="help-btn"><i class="fa-solid fa-circle-question"></i></button>
           <div class="adv-user-box">
             <div class="adv-user-info">
-              <h4>Amal Ahmed</h4>
-              <p>ID: 882910</p>
+              <h4>Advisor Name</h4>
+              <p>ID: 202101234</p>
             </div>
             <div class="adv-user-avatar">
               <i class="fa-solid fa-user"></i>
@@ -89,15 +81,20 @@
                 <button class="adv-pill active" id="filter-all">All Students</button>
                 <button class="adv-pill" id="filter-high">High Risk</button>
                 <button class="adv-pill" id="filter-moderate">Moderate</button>
+                <button class="adv-pill" id="filter-stable">Stable</button>
               </div>
             </div>
             <div class="adv-filter-group">
               <span class="adv-filter-label">GPA RANGE</span>
               <select class="adv-select" id="gpa-range-select">
                 <option>All Ranges</option>
-                <option>Below 2.0</option>
-                <option>2.0 - 3.0</option>
-                <option>3.0 - 4.0</option>
+                <option>Below 2.1</option>
+                <option>2.1 - 2.5</option>
+                <option>2.5 - 3.0</option>
+                <option>3.0 - 3.5</option>
+                <option>3.5 - 4.0</option>
+                <option>4.0 - 4.5</option>
+                <option>4.5 - 5.0</option>
               </select>
             </div>
           </div>
@@ -113,7 +110,7 @@
           </div>
         </div>
 
-        <p class="adv-filter-count">Displaying 24 of 142 students</p>
+        
 
         <!-- Students Table -->
         <div class="adv-table-card">
@@ -133,7 +130,7 @@
                   <div class="adv-student-cell">
                     <img src="images/image_girls_profile.png" alt="Fatima Al-Rashid" class="adv-student-avatar" />
                     <div>
-                      <h4>Fatima Al-Rashid</h4>
+                      <h4>Student Name</h4>
                       <p>Computer Science • Year 3</p>
                     </div>
                   </div>
@@ -153,7 +150,7 @@
                   </div>
                 </td>
                 <td>
-                  <a href="advisor-performance.html" class="adv-view-link" id="view-fatima">View Profile</a>
+                  <a href="advisor-performance.html" class="adv-view-link" id="view-student-1">View Profile</a>
                 </td>
               </tr>
               <!-- Student 2 -->
@@ -162,7 +159,7 @@
                   <div class="adv-student-cell">
                     <img src="images/image_girls_profile.png" alt="amal Talal" class="adv-student-avatar" />
                     <div>
-                      <h4>amal Talal</h4>
+                      <h4>Student Name</h4>
                       <p>Mechanical Engineering • Year 2</p>
                     </div>
                   </div>
@@ -182,7 +179,7 @@
                   </div>
                 </td>
                 <td>
-                  <a href="advisor-performance.html" class="adv-view-link" id="view-amal">View Profile</a>
+                  <a href="advisor-performance.html" class="adv-view-link" id="view-student-2">View Profile</a>
                 </td>
               </tr>
               <!-- Student 3 -->
@@ -191,7 +188,7 @@
                   <div class="adv-student-cell">
                     <img src="images/image_man_profile.png" alt="ahmed Mansour" class="adv-student-avatar" />
                     <div>
-                      <h4>ahmed Mansour</h4>
+                      <h4>Student Name</h4>
                       <p>Business Analytics • Year 4</p>
                     </div>
                   </div>
@@ -211,7 +208,7 @@
                   </div>
                 </td>
                 <td>
-                  <a href="advisor-performance.html" class="adv-view-link" id="view-ahmed">View Profile</a>
+                  <a href="advisor-performance.html" class="adv-view-link" id="view-student-3">View Profile</a>
                 </td>
               </tr>
               <!-- Student 4 -->
@@ -220,7 +217,7 @@
                   <div class="adv-student-cell">
                     <img src="images/image_girls_profile.png" alt="malak Al-Saud" class="adv-student-avatar" />
                     <div>
-                      <h4>malak Al-Saud</h4>
+                      <h4>Student Name</h4>
                       <p>Architecture • Year 1</p>
                     </div>
                   </div>
@@ -240,13 +237,132 @@
                   </div>
                 </td>
                 <td>
-                  <a href="advisor-performance.html" class="adv-view-link" id="view-malak">View Profile</a>
+                  <a href="advisor-performance.html" class="adv-view-link" id="view-student-4">View Profile</a>
+                </td>
+              </tr>
+              <!-- Student 1 -->
+              <tr>
+                <td>
+                  <div class="adv-student-cell">
+                    <img src="images/image_girls_profile.png" alt="Fatima Al-Rashid" class="adv-student-avatar" />
+                    <div>
+                      <h4>Student Name</h4>
+                      <p>Computer Science • Year 3</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="adv-gpa-cell">
+                    <strong>GPA 2.15</strong>
+                    <span>Last Semester: 2.80</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="adv-risk-cell">
+                    <span class="adv-risk-badge high">
+                      <span class="adv-risk-dot high"></span> HIGH RISK
+                    </span>
+                    <p>Declining performance in core modules</p>
+                  </div>
+                </td>
+                <td>
+                  <a href="advisor-performance.html" class="adv-view-link" id="view-student-1">View Profile</a>
+                </td>
+              </tr>
+              <!-- Student 2 -->
+              <tr>
+                <td>
+                  <div class="adv-student-cell">
+                    <img src="images/image_girls_profile.png" alt="amal Talal" class="adv-student-avatar" />
+                    <div>
+                      <h4>Student Name</h4>
+                      <p>Mechanical Engineering • Year 2</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="adv-gpa-cell">
+                    <strong>GPA 3.85</strong>
+                    <span>Last Semester: 3.75</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="adv-risk-cell">
+                    <span class="adv-risk-badge stable">
+                      <span class="adv-risk-dot stable"></span> STABLE
+                    </span>
+                    <p>Consistent honors list placement</p>
+                  </div>
+                </td>
+                <td>
+                  <a href="advisor-performance.html" class="adv-view-link" id="view-student-2">View Profile</a>
+                </td>
+              </tr>
+              <!-- Student 3 -->
+              <tr>
+                <td>
+                  <div class="adv-student-cell">
+                    <img src="images/image_man_profile.png" alt="ahmed Mansour" class="adv-student-avatar" />
+                    <div>
+                      <h4>Student Name</h4>
+                      <p>Business Analytics • Year 4</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="adv-gpa-cell">
+                    <strong>GPA 3.10</strong>
+                    <span>Last Semester: 3.12</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="adv-risk-cell">
+                    <span class="adv-risk-badge moderate">
+                      <span class="adv-risk-dot moderate"></span> MODERATE
+                    </span>
+                    <p>Missing several elective assignments</p>
+                  </div>
+                </td>
+                <td>
+                  <a href="advisor-performance.html" class="adv-view-link" id="view-student-3">View Profile</a>
+                </td>
+              </tr>
+              <!-- Student 4 -->
+              <tr>
+                <td>
+                  <div class="adv-student-cell">
+                    <img src="images/image_girls_profile.png" alt="malak Al-Saud" class="adv-student-avatar" />
+                    <div>
+                      <h4>Student Name</h4>
+                      <p>Architecture • Year 1</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="adv-gpa-cell">
+                    <strong>GPA 2.45</strong>
+                    <span>First Semester</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="adv-risk-cell">
+                    <span class="adv-risk-badge moderate">
+                      <span class="adv-risk-dot moderate"></span> MODERATE
+                    </span>
+                    <p>Initial transition period difficulties</p>
+                  </div>
+                </td>
+                <td>
+                  <a href="advisor-performance.html" class="adv-view-link" id="view-student-4">View Profile</a>
                 </td>
               </tr>
             </tbody>
           </table>
 
-          <!-- Pagination -->
+
+
+          <!-- Pagination 
+
           <div class="adv-pagination">
             <div class="adv-pagination-left">
               <button class="adv-page-btn" id="prev-page">&lt;</button>
@@ -259,6 +375,8 @@
           </div>
         </div>
 
+
+        -->
       </div>
 
       <!-- Footer -->
@@ -266,19 +384,8 @@
         <div class="adv-footer-inner">
           <div class="adv-footer-left">
             <div class="adv-footer-brand">MentorVerse</div>
-            <p>&copy; 2026 MENTORVERSE. SAUDI ACADEMIC EXCELLENCE.</p>
+            <p>&copy; 2026 MENTORVERSE.</p>
           </div>
-          <div class="adv-footer-cols">
-            <div class="adv-footer-col">
-              <h4>PLATFORM</h4>
-              <a href="#">UNIVERSITY DIRECTORY</a>
-              <a href="#">PARTNER LOGOS</a>
-            </div>
-            <div class="adv-footer-col">
-              <h4>LEGAL</h4>
-              <a href="#">PRIVACY POLICY</a>
-              <a href="#">TERMS OF SERVICE</a>
-            </div>
           </div>
         </div>
       </footer>
