@@ -838,18 +838,16 @@ a {
   }
 }
 
-< !DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>MentorVerse | Register</title><link rel="stylesheet" href="CSS/style.css" /></head><body class="register-page"><main class="register-layout">< !-- Left Side --><section class="register-left"><div class="register-left-inner"><div class="register-brand">MentorVerse</div><p class="register-eyebrow">JOIN THE EXCELLENCE</p><h1 class="register-hero-title">Begin Your <span>Academic</span>Journey. </h1><p class="register-hero-text">Access a curated network of Saudi academic leaders. Whether you are seeki… [11:15 AM,
-4/4/2026] .: < !DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>MentorVerse | Register</title><link rel="stylesheet" href="CSS/register.css" /></head><body><main class="register-page">< !-- Left --><section class="register-left"><div class="left-inner"><div class="brand-row"><div class="brand-icon">▣</div><span class="brand-name">MentorVerse</span></div><p class="eyebrow">JOIN THE EXCELLENCE</p><h1 class="hero-title">Begin Your <span>Academic</span>Journey. </h1><p class="hero-text">Access a curated network of Saudi academic leaders. Whether you are seeking guidance or offering expertise,
-MentorVerse is your gateway to university excellence. </p><div class="hero-image-card"><div class="hero-image-badge">DGA CERTIFIED PORTAL</div></div><div class="stats-row"><div class="mini-stat"><h3>50+</h3><p>PARTNER UNIVERSITIES</p></div><div class="mini-stat"><h3>12k</h3><p>ACTIVE MENTORS</p></div></div></div></section>< !-- Right --><section class="register-right"><div class="top-login-link"><span>ALREADY HAVE AN ACCOUNT?</span><a href="login.html">Login</a></div><div class="register-card"><div class="step-row"><div class="step-box active-step">1</div><h2>Select Your Role</h2></div><div class="role-grid"><div class="role-card active"><div class="role-title">Student</div><div class="role-text">Access resources &amp;
-find mentors</div></div><div class="role-card"><div class="role-title">Advisor</div><div class="role-text">Provide guidance &amp;
-share expertise</div></div></div><div class="step-row second"><div class="step-box active-step">2</div><h2>Personal Details</h2></div><form class="register-form" action="login.html"><div class="form-grid two"><div class="field-group"><label>First Name</label><input type="text" required /></div><div class="field-group"><label>Last Name</label><input type="text" required /></div></div><div class="form-grid one"><div class="field-group"><label>University Email</label><input type="email" required /></div></div><div class="form-grid one"><div class="field-group"><label>University ID</label><input type="text" required /></div></div><div class="step-row third"><div class="step-box active-step">3</div><h2>Security</h2></div><div class="form-grid two"><div class="field-group"><label>Password</label><input type="password" required /></div><div class="field-group"><label>Confirm Password</label><input type="password" required /></div></div><label class="checkbox-row"><input type="checkbox" required /><span>I agree to the Terms of Service and Privacy Policy of the Saudi MentorVerse Academic Portal. </span></label><button type="submit" class="submit-btn">Create Account</button></form></div></section></main><footer class="register-footer"><div class="footer-brand">MentorVerse</div><div class="footer-links"><a href="#">PRIVACY POLICY</a><a href="#">TERMS OF SERVICE</a><a href="#">PARTNER LOGOS</a><a href="#">UNIVERSITY DIRECTORY</a></div></footer></body></html>
 /* ================= REGISTER FIX ================= */
 
+/*
 .register-page {
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 100vh;
 }
+
+*/
 
 .register-left {
   padding: 40px;
@@ -6334,3 +6332,6 @@ body {
     gap: 16px;
   }
 }
+
+
+
