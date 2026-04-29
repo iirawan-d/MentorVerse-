@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from pymongo import MongoClient
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/')
 
 # MongoDB connection
 client = MongoClient("mongodb://localhost:27017/")
