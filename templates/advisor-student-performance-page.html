@@ -12,50 +12,26 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='advisor-dashboard.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="{{ url_for('static', filename='student-dashboard-page.css') }}">
 </head>
 
 <body class="adv-page">
 
-  <div class="adv-layout">
-
-    <!-- Sidebar -->
-    <aside class="adv-sidebar">
-      <div class="adv-sidebar-brand">
-        <a href="/Home-page" class="adv-logo">MentorVerse</a>
-        <p class="adv-logo-title">Academic Progress</p>
-        <p class="adv-logo-sub">University Portal</p>
-      </div> 
-
-      <nav class="adv-sidebar-nav">
-        <a href="/advisor-students-list-page" class="adv-nav-item" id="nav-dashboard">
-          <i class="fa-solid fa-th-large"></i> Student List
-        </a>
-        <a href="/advisor-student-performance-page" class="adv-nav-item active" id="nav-performance">
-          <i class="fa-solid fa-chart-line"></i> Performance
-        </a>
-        <a href="/advisor-notification-page" class="adv-nav-item" id="nav-notifications">
-          <i class="fa-solid fa-bell"></i> Notifications
-        </a>
-        <a href="/advisor-settings-page" class="adv-nav-item" id="nav-settings">
-          <i class="fa-solid fa-gear"></i> Settings
-        </a>
-      </nav>
-    </aside>
-
-    <!-- Main -->
-    <div class="adv-main">
-
       <!-- Top Navbar -->
       <header class="adv-topbar">
         <div class="adv-topbar-left">
-          <a href="/Home-page" class="adv-topbar-brand">MentorVerse</a>
+        <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="brand-text">
+          <h2>MentorVerse</h2>
+          <p>ACADEMIC PORTAL</p>
+        </div>
         </div>
         <div class="adv-topbar-right">
-          <span class="adv-notif-badge" id="notif-count">93</span>
-          <button class="adv-icon-btn"><i class="fa-solid fa-bell"></i></button>
+          <button class="adv-icon-btn" id="notif-btn"><i class="fa-solid fa-bell"></i></button>
           <div class="adv-user-box">
             <div class="adv-user-info">
-              <h4>Advisor Name</h4>
+              <h4>Student Name</h4>
               <p>ID: 202101234</p>
             </div>
             <div class="adv-user-avatar">
@@ -64,6 +40,27 @@
           </div>
         </div>
       </header>
+
+
+
+  <div class="adv-layout">
+
+    <!-- Sidebar -->
+
+  <aside class="sidebar">
+
+      <nav class="side-nav">
+        <a href="/advisor-students-list-page" class="adv-nav-item"><i class="fa-solid fa-table-cells-large"></i><span>Student List</span></a>
+        <a href="/advisor-student-performance-page" class="nav-item active"><i class="fa-solid fa-bell"></i><span>Performance</span></a>
+        <a href="/advisor-notification-page" class="adv-nav-item"><i class="fa-regular fa-calendar"></i><span>Notifications</span></a>
+        <a href="/advisor-settings-page" class="adv-nav-item"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+      </nav>
+    </aside>
+
+
+
+    <!-- Main -->
+    <div class="adv-main">
 
       <!-- Content -->
       <div class="adv-content">

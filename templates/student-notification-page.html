@@ -10,12 +10,37 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='advisor-dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='student-dashboard-page.css') }}">
 </head>
 <body class="adv-page">
 
+
+      <!-- Top Navbar -->
+      <header class="adv-topbar">
+        <div class="adv-topbar-left">
+        <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="brand-text">
+          <h2>MentorVerse</h2>
+          <p>ACADEMIC PORTAL</p>
+        </div>
+        </div>
+        <div class="adv-topbar-right">
+          <button class="adv-icon-btn" id="notif-btn"><i class="fa-solid fa-bell"></i></button>
+          <div class="adv-user-box">
+            <div class="adv-user-info">
+              <h4>Student Name</h4>
+              <p>ID: 202101234</p>
+            </div>
+            <div class="adv-user-avatar">
+              <i class="fa-solid fa-user"></i>
+            </div>
+          </div>
+        </div>
+      </header>
+
   <div class="adv-layout">
 
-    <!-- Sidebar -->
+    <!-- Sidebar 
     <aside class="adv-sidebar">
       <div class="adv-sidebar-brand">
         <a href="/Home-page" class="adv-logo">MentorVerse</a>
@@ -41,28 +66,23 @@
         </a>
       </nav>
     </aside>
+-->
+    <aside class="sidebar">
+
+
+      <nav class="side-nav">
+        <a href="/student-dashboard-page" class="adv-nav-item"><i class="fa-solid fa-table-cells-large"></i><span>Dashboard</span></a>
+        <a href="/student-notification-page" class="nav-item active"><i class="fa-regular fa-bell"></i><span>Notifications</span></a>
+        <a href="/student-transcript-page" class="adv-nav-item"><i class="fa-regular fa-file-lines"></i><span>Transcript</span></a>
+        <a href="/student-schedule-page" class="adv-nav-item"><i class="fa-regular fa-calendar"></i><span>Schedule</span></a>
+        <a href="/student-settings-page" class="adv-nav-item"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+      </nav>
+    </aside>
 
     <!-- Main -->
     <div class="adv-main">
 
-      <!-- Top Navbar -->
-      <header class="adv-topbar">
-        <div class="adv-topbar-left">
-          <a href="/Home-page" class="adv-topbar-brand">MentorVerse</a>
-        </div>
-        <div class="adv-topbar-right">
-          <button class="adv-icon-btn" id="notif-btn"><i class="fa-solid fa-bell"></i></button>
-          <div class="adv-user-box">
-            <div class="adv-user-info">
-              <h4>Student Name</h4>
-              <p>ID: 202101234</p>
-            </div>
-            <div class="adv-user-avatar">
-              <i class="fa-solid fa-user"></i>
-            </div>
-          </div>
-        </div>
-      </header>
+  
 
       <!-- Content -->
       <div class="adv-content">

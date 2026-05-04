@@ -5,43 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Advisor Settings</title>
   <meta name="description" content="Advisor account settings - manage your profile information, credentials, and preferences." />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='advisor-settings-page.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='student-dashboard-page.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='advisor-dashboard.css') }}">
 
 </head>
 <body>
 
-  <!-- Top Brand Bar -->
-  <div class="as-brand-bar">
-    <a href="/Home-page">MentorVerse</a>
-  </div>
+
+      <!-- Top Navbar -->
+      <header class="adv-topbar">
+        <div class="adv-topbar-left">
+        <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="brand-text">
+          <h2>MentorVerse</h2>
+          <p>ACADEMIC PORTAL</p>
+        </div>
+        </div>
+        <div class="adv-topbar-right">
+          <button class="adv-icon-btn" id="notif-btn"><i class="fa-solid fa-bell"></i></button>
+          <div class="adv-user-box">
+            <div class="adv-user-info">
+              <h4>Student Name</h4>
+              <p>ID: 202101234</p>
+            </div>
+            <div class="adv-user-avatar">
+              <i class="fa-solid fa-user"></i>
+            </div>
+          </div>
+        </div>
+      </header>
+
+
+
 
   <div class="as-shell">
 
     <!-- Sidebar -->
-    <aside class="as-sidebar">
-      <div class="as-profile-box">
-        <div class="as-avatar">
-          <img src="../images/profile.jpg" alt="Avatar" />
-        </div>
-        <span class="as-welcome">Welcome, Nora Mohammed</span>
-        <span class="as-year">Academic Year 2026</span>
-      </div>
+    <aside class="sidebar">
 
-      <nav class="as-nav">
-        <a href="/advisor-students-list-page" id="nav-dashboard">
-          <i class="fa-solid fa-border-all as-nav-icon"></i> Student List
-        </a>
-        <a href="/advisor-notification-page" class="adv-nav-item" id="nav-notifications">
-          <i class="fa-solid fa-bell"></i> Notifications
-        </a>
-        <a href="/advisor-settings-page" class="active" id="nav-settings">
-          <i class="fa-solid fa-gear as-nav-icon"></i> Settings
-        </a>
+      <nav class="side-nav">
+        <a href="/advisor-students-list-page" class="adv-nav-item"><i class="fa-solid fa-table-cells-large"></i><span>Student List</span></a>
+        <a href="/advisor-notification-page" class="adv-nav-item"><i class="fa-solid fa-bell"></i><span>Notifications</span></a>
+        <a href="/advisor-settings-page" class="nav-item active"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
       </nav>
-
-
-    </aside> 
+    </aside>
 
     <!-- Main -->
     <main class="as-main">
