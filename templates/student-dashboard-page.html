@@ -28,7 +28,7 @@
           <button class="adv-icon-btn" id="notif-btn"><i class="fa-solid fa-bell"></i></button>
           <div class="adv-user-box">
             <div class="adv-user-info">
-              <h4>Student Name</h4>
+              <h4>Noura Mousa</h4>
               <p>ID: 202101234</p>
             </div>
             <div class="adv-user-avatar">
@@ -65,15 +65,15 @@
           <div class="card stat-card">
             <div class="stat-top">
               <div class="stat-icon mint"><i class="fa-regular fa-star"></i></div>
-              <span class="pill pill-green">+0.12 pts</span>
+              <span class="pill pill-green">+0.02 pts</span>
             </div>
             <p class="stat-label">CURRENT GPA</p>
-            <h3>3.92</h3>
+            <h3>3.82</h3>
           </div>
 
           <div class="card stat-card">
             <div class="stat-top">
-              <div class="stat-icon blue"><i class="fa-regular fa-shield-heart"></i></div>
+              <div class="stat-icon blue"><i class="fa-solid fa-shield-heart"></i></div>
               <span class="pill pill-blue">Optimal</span>
             </div>
             <p class="stat-label">RISK LEVEL</p>
@@ -86,7 +86,7 @@
               <span class="pill pill-sand">78% Done</span>
             </div>
             <p class="stat-label">CREDITS COMPLETED</p>
-            <h3>104<span>/132</span></h3>
+            <h3>101<span>/132</span></h3>
           </div>
 
           <div class="card stat-card">
@@ -113,12 +113,10 @@
                 <p>Aggregated scoring across all core modules</p>
               </div>
 
-              <div class="switch-pills">
-                <span class="small-pill">YTD</span>
-                <span class="small-pill active">Last 6 Months</span>
-              </div>
-            </div>
 
+            </div>
+<!--
+            
             <div class="chart-box">
               <div class="chart-line">
                 <div class="seg seg1"></div>
@@ -130,6 +128,38 @@
                 <div class="seg seg7"></div>
               </div>
             </div>
+
+-->
+
+
+        <div class="adv-chart-canvas">
+          <svg viewBox="0 0 600 200" class="adv-line-chart">
+            <defs>
+              <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="rgba(23,135,109,0.25)" />
+                <stop offset="100%" stop-color="rgba(23,135,109,0)" />
+              </linearGradient>
+            </defs>
+            <path d="M30,160 Q80,150 120,130 T220,100 T320,80 T420,60 T520,30 L570,25" fill="none"
+              stroke="#17876d" stroke-width="3" stroke-linecap="round" />
+            <path d="M30,160 Q80,150 120,130 T220,100 T320,80 T420,60 T520,30 L570,25 L570,200 L30,200Z"
+              fill="url(#chartGrad)" />
+            <circle cx="30" cy="160" r="5" fill="#17876d" />
+            <circle cx="120" cy="130" r="5" fill="#17876d" />
+            <circle cx="220" cy="100" r="5" fill="#17876d" />
+            <circle cx="320" cy="80" r="5" fill="#17876d" />
+            <circle cx="420" cy="60" r="5" fill="#17876d" />
+            <circle cx="520" cy="30" r="5" fill="#17876d" />
+            <circle cx="570" cy="25" r="5" fill="#17876d" />
+          </svg>
+          <div class="adv-chart-x-labels">
+            <span>Sem 1</span><span>Sem 2</span><span>Sem 3</span><span>Sem 4</span><span>Sem 5</span><span>Sem
+              6</span><span>Sem 7</span>
+          </div>
+        </div>
+
+
+
 
             <div class="mini-stat-grid">
               <div class="mini-stat">
@@ -147,14 +177,89 @@
                 <h4>+12.4%</h4>
               </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            
           </div>
 
+
+
+
+
+
+
+
+
+
+
+
+          
 
 <!--  2 cards gpa line graph and circle graph  -->
     <!--  circle graph card -->
           <div class="right-stack">
+
+<!--  Ai insight   --> 
+          <div class="card final-ai">
+            <h3><i class="fa-solid fa-sparkles"></i> AI Insights</h3>
+
+            <div class="insight-box">
+              <span>Attendance</span>
+              <p>Your attendance needs improvement try to attend classes more regularly.</p>
+            </div>
+
+            <div class="insight-box blue">
+              <span>Cloud Computing</span>
+              <p>Based on your previous grades you need to study more for Cloud Computing.</p>
+            </div>
+          </div>
+
+ <!--  WEEKLY STUDY DENSITY   --> 
+          <div class="card weekly-density">
+            <h3>Weekly Study Density</h3>
+
+            <div class="week-bars">
+              <div><span class="b1"></span><p>MON</p></div>
+              <div><span class="b2"></span><p>TUE</p></div>
+              <div><span class="b3"></span><p>WED</p></div>
+              <div><span class="b4"></span><p>THU</p></div>
+              <div><span class="b5"></span><p>FRI</p></div>
+              <div><span class="b6"></span><p>SAT</p></div>
+              <div><span class="b7"></span><p>SUN</p></div>
+            </div>
+          </div>
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
             <div class="card dial-card">
-              <h2>Academic Health Dial</h2>
+              <h2> </h2>
 
               <div class="dial-wrap">
                 <div class="circle-progress">
