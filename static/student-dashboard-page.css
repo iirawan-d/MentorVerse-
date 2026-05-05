@@ -303,7 +303,7 @@
     }
 
     .mint{ background:#e6f4ef; color:var(--green); }
-    .blue{ background:var(--blue-soft); color:var(--blue); }
+    .bluee{ background:var(--blue-soft); color:var(--blue); }
     .sand{ background:var(--gold-soft); color:var(--gold); }
     .lavender{ background:var(--pink-soft); color:var(--pink); }
 
@@ -687,7 +687,7 @@
     }
 
     .green-bar{ background:#1a7b68; }
-    .blue-bar{ background:#3f78b4; }
+    .bluee-bar{ background:#3f78b4; }
     .gold-bar{ background:#8d6e2f; }
 
     .trend-up{ color:#1a7b68; }
@@ -792,7 +792,7 @@ border:none;
   
 
     .badge.green{background:#dff1ea;color:#137a68;}
-    .badge.blue{background:#e7f1fb;color:#537fb7;}
+    .badge.bluee{background:#e7f1fb;color:#537fb7;}
     .badge.gold{background:#f4eddc;color:#8d6e2f;}
 
     .attendance-intelligence{
@@ -1396,7 +1396,7 @@ border:none;
       margin-bottom:14px;
     }
 
-    .insight-box.blue{
+    .insight-box.bluee{
       border-left-color:#497fb5;
     }
 
