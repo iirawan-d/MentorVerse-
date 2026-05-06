@@ -346,21 +346,101 @@ def logout():
 ## private pages ##
 # student pages  
 
-@app.route("/student-dashboard-page/", methods=["GET", "POST"])
+@app.route("/student-dashboard-page/")
 def student_dashboard_page():
 
-    if "user_id" not in session:
+    if not student_required():
         return redirect(url_for("login_page"))
-
-    #user = students.find_one({"email": session["email"]})
-
-    # Visuals
-
-
 
     user = get_logged_user()
 
-    return render_template("student-dashboard-page.html", user=user)
+    transcript = user.get("transcript", [])
+    schedule = user.get("schedule", [])
+
+    current_gpa = user.get("cumulative_gpa", 0)
+
+    last_semester = transcript[-2] if len(transcript) >= 2 else {}
+    current_semester = transcript[-1] if transcript else {}
+
+    last_semester_gpa = last_semester.get("semester_gpa", 0)
+    current_courses = current_semester.get("courses", [])
+
+    completed_courses = 0
+    total_credits = 0
+    total_absences = 0
+
+    for semester in transcript:
+        for course in semester.get("courses", []):
+            total_absences += course.get("absences", 0)
+
+            if course.get("grade") != "NG":
+                completed_courses += 1
+                total_credits += course.get("credits", 0)
+
+    gpa_change = round(current_gpa - last_semester_gpa, 2)
+
+    if current_gpa < 2.5:
+        risk_level = "High Risk"
+        risk_status = "Warning"
+    elif current_gpa < 3.5:
+        risk_level = "Moderate"
+        risk_status = "Needs Attention"
+    else:
+        risk_level = "Stable"
+        risk_status = "Optimal"
+
+    attendance_percentage = max(0, 100 - total_absences)
+
+    # GPA graph, remove current NG semester
+    gpa_semesters = transcript[:-1]
+
+    # Weekly Study Density
+    weekly_density = []
+    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+    for day in days:
+        count = len([item for item in schedule if item.get("day") == day])
+        weekly_density.append({
+            "day": day[:3].upper(),
+            "count": count,
+            "height": count * 20
+        })
+
+    # Absence graph
+    absence_data = []
+
+    for course in current_courses:
+        absences = course.get("absences", 0)
+        absence_data.append({
+            "code": course.get("course_code"),
+            "absences": absences,
+            "height": (absences + 1) * 15
+        })
+
+    last_courses = last_semester.get("courses", [])
+
+    return render_template(
+        "student-dashboard-page.html",
+        user=user,
+        transcript=transcript,
+        schedule=schedule,
+        current_gpa=current_gpa,
+        last_semester=last_semester,
+        current_semester=current_semester,
+        last_semester_gpa=last_semester_gpa,
+        current_courses=current_courses,
+        completed_courses=completed_courses,
+        total_credits=total_credits,
+        total_absences=total_absences,
+        gpa_change=gpa_change,
+        risk_level=risk_level,
+        risk_status=risk_status,
+        attendance_percentage=attendance_percentage,
+        gpa_semesters=gpa_semesters,
+        weekly_density=weekly_density,
+        last_courses=last_courses,
+        absence_data=absence_data
+    )
 
 
 
@@ -559,21 +639,6 @@ def advisor_students_list_page():
 
 
 
-@app.route("/advisor-student-performance-cards/")
-def advisor_student_performance_cards():
-    if not advisor_required():
-        return redirect(url_for("login_page"))
-
-    user = get_logged_user()
-
-    return render_template(
-        "advisor-student-performance-cards.html",
-        user=user
-    )
-
-
-
-
 
 @app.route("/advisor-student-performance-page/<sid>", methods=["GET", "POST"])
 def advisor_student_performance_page(sid):
@@ -647,7 +712,7 @@ def advisor_student_performance_page(sid):
         risk_score = "12%"
 
     level = max(1, min(4, len(transcript) // 2))
-    
+    gpa_semesters = transcript[:-1]
 
     return render_template(
         "advisor-student-performance-page.html",
@@ -664,6 +729,7 @@ def advisor_student_performance_page(sid):
         risk_class=risk_class,
         risk_score=risk_score,
         last_semester=last_semester,
+        gpa_semesters=gpa_semesters,
         level=level
     )
 

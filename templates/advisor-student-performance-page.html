@@ -154,31 +154,59 @@
                 <div class="adv-chart-y-labels">
                   <span>4.0</span><span>3.5</span><span>3.0</span><span>2.5</span><span>2.0</span>
                 </div>
-                <div class="adv-chart-canvas">
-                  <svg viewBox="0 0 600 200" class="adv-line-chart">
-                    <defs>
-                      <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="rgba(23,135,109,0.25)" />
-                        <stop offset="100%" stop-color="rgba(23,135,109,0)" />
-                      </linearGradient>
-                    </defs>
-                    <path d="M30,160 Q80,150 120,130 T220,100 T320,80 T420,60 T520,30 L570,25" fill="none"
-                      stroke="#17876d" stroke-width="3" stroke-linecap="round" />
-                    <path d="M30,160 Q80,150 120,130 T220,100 T320,80 T420,60 T520,30 L570,25 L570,200 L30,200Z"
-                      fill="url(#chartGrad)" />
-                    <circle cx="30" cy="160" r="5" fill="#17876d" />
-                    <circle cx="120" cy="130" r="5" fill="#17876d" />
-                    <circle cx="220" cy="100" r="5" fill="#17876d" />
-                    <circle cx="320" cy="80" r="5" fill="#17876d" />
-                    <circle cx="420" cy="60" r="5" fill="#17876d" />
-                    <circle cx="520" cy="30" r="5" fill="#17876d" />
-                    <circle cx="570" cy="25" r="5" fill="#17876d" />
-                  </svg>
-                  <div class="adv-chart-x-labels">
-                    <span>Sem 1</span><span>Sem 2</span><span>Sem 3</span><span>Sem 4</span><span>Sem 5</span><span>Sem
-                      6</span><span>Sem 7</span>
-                  </div>
-                </div>
+                
+<div class="adv-chart-canvas">
+
+  <svg viewBox="0 0 600 200" class="adv-line-chart">
+
+    <defs>
+      <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="rgba(23,135,109,0.25)" />
+        <stop offset="100%" stop-color="rgba(23,135,109,0)" />
+      </linearGradient>
+    </defs>
+
+    <polyline
+      fill="none"
+      stroke="#17876d"
+      stroke-width="3"
+      stroke-linecap="round"
+      points="
+      {% for semester in gpa_semesters %}
+        {% set x = 30 + (loop.index0 * (540 / ((gpa_semesters|length - 1) if gpa_semesters|length > 1 else 1))) %}
+        {% set y = 190 - ((semester.semester_gpa / 5) * 160) %}
+        {{ x }},{{ y }}
+      {% endfor %}
+      "
+    />
+
+    {% for semester in gpa_semesters %}
+
+      {% set x = 30 + (loop.index0 * (540 / ((gpa_semesters|length - 1) if gpa_semesters|length > 1 else 1))) %}
+      {% set y = 190 - ((semester.semester_gpa / 5) * 160) %}
+
+      <circle
+        cx="{{ x }}"
+        cy="{{ y }}"
+        r="5"
+        fill="#17876d"
+      />
+
+    {% endfor %}
+
+  </svg>
+
+  <div class="adv-chart-x-labels">
+
+    {% for semester in gpa_semesters %}
+      <span>Sem {{ loop.index }}</span>
+    {% endfor %}
+
+  </div>
+
+</div>
+
+
               </div>
             </div>
           </div>
@@ -197,186 +225,11 @@
           </div>
         </div>
 
-        <!-- 2 cards Current Semester Performance line chart + Risk Factor circle -->
-        <div class="adv-perf-row">
-          <div class="adv-perf-card wide">
-            <div class="adv-card-head">
-              <h3>Current Semester Performance</h3>
-              
-            </div>
-            <table class="adv-course-table" id="semester-table">
-              <thead>
-                <tr>
-                  <th>Course</th>
-                  <th>Grade</th>
-                  <th>Progress</th>
-                  <th>Trend</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for course in current_courses %}
-                <tr>
-                  <td>
-                    <div class="adv-course-cell">
-                      <span class="adv-course-code">{{ course.course_code }}</span>
-                      <span class="adv-course-name">{{ course.course_name }}</span>
-                    </div>
-                  </td>
-                  <td><strong>{{ course.grade }}</strong></td>
-                  <td>
-                    <div class="adv-progress-bar">
-                      <div class="adv-progress-fill" style="width: 80%"></div>
-                    </div>
-                  </td>
-                  <td><span class="adv-trend up"><i class="fa-solid fa-arrow-up"></i></span></td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-          <div class="adv-perf-card narrow">
-            <div class="adv-card-head">
-              <h3>Risk Factor Analysis</h3>
-            </div>
-            <div class="adv-risk-dial">
-              <div class="adv-dial-ring">
-                <div class="adv-dial-inner">
-                  <h3>{{ risk_level }}</h3>
-                </div>
-              </div>
-              <div class="adv-dial-legend">
-                <div class="adv-dial-item">
-                  <span class="adv-dial-dot green"></span>
-                  <span>Academic: Strong</span>
-                </div>
-                <div class="adv-dial-item">
-                  <span class="adv-dial-dot blue"></span>
-                  <span>Attendance: Excellent</span>
-                </div>
-                <div class="adv-dial-item">
-                  <span class="adv-dial-dot gold"></span>
-                  <span>Engagement: Active</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <!-- 3 cards Semester GPA Trends bar chart  + Academic Health Dial circle -->
-        <div class="adv-perf-row">
-          <div class="adv-perf-card wide">
-            <div class="adv-card-head">
-              <h3>Semester GPA Trends</h3>
-              <div class="adv-legend">
-                <span class="adv-legend-item"><span class="adv-legend-dot green"></span> CUMULATIVE</span>
-              </div>
-            </div>
-            <div class="adv-bar-chart" id="semester-bar-chart">
-              <div class="adv-bar-container">
-
-                  {% for semester in transcript[:-1] %}
-
-                    {% set gpa = semester.semester_gpa %}
-
-                    <div class="adv-bar-wrapper">
-
-                      <div class="adv-bar
-                        {% if loop.last %}
-                          highlight
-                        {% endif %}
-                      "
-
-                      style="height: {{ (gpa / 5) * 100 }}%">
-
-                        <span>{{ gpa }}</span>
-
-                      </div>
-
-                      <p>
-                        {{ semester.semester }}
-                      </p>
-
-                    </div>
-
-                  {% endfor %}
-
-                </div>
-            </div>
-          </div>
-          
-          
-          
-          <div class="adv-perf-card narrow adv-stacked-cards">
-            <!-- Academic Health Dial -->
-            <div class="adv-stacked-top">
-              <div class="adv-card-head">
-                <h3>Academic Health Dial</h3>
-              </div>
-              <div class="adv-donut-wrap compact">
-                <div class="adv-donut small">
-                  <div class="adv-donut-inner small">
-                    <div>
-                      <h3>{{ 100 - total_absences }}%</h3>
-                      <span class="adv-donut-label">
-                        {{ current_semester.academic_standing }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div class="adv-donut-legend horizontal">
-                  <div><span class="adv-dial-dot green"></span> Grades</div>
-                  <div><span class="adv-dial-dot red"></span> Engagement</div>
-                </div>
-              </div>
-            </div>
 
 
 
 
-            <!-- Absences Trend  -->
-            <div class="adv-stacked-bottom">
-              <div class="adv-card-head">
-                <h3>Absences Trend</h3>
-              </div>
-              <div class="adv-absences-chart">
-                <div class="adv-absences-bars">
-
-                {% for course in current_courses %}
-
-                <div class="adv-absence-bar-item">
-
-                  <div class="adv-absence-bar
-
-                    {% if course.absences >= 4 %}
-                      dark
-                    {% elif course.absences >= 2 %}
-                      dashed
-                    {% endif %}
-
-                  "
-
-                  style="height: {{ (course.absences + 1) * 15 }}%">
-                  </div>
-
-                </div>
-
-                {% endfor %}
-
-              </div>
-                              <div class="adv-absences-x-labels">
-
-                {% for course in current_courses %}
-                  <span>{{ course.course_code }}</span>
-                {% endfor %}
-
-              </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3 cards Current Academic Modules & Trends + Semester Comparison -->
+<!-- 3 cards Current Academic Modules & Trends + Semester Comparison -->
         <div class="adv-perf-row">
           <div class="adv-perf-card wide">
             <div class="adv-card-head">
@@ -561,6 +414,198 @@
           </div>
         </div>
 
+
+
+
+
+
+
+
+
+
+
+
+        <!-- 2 cards Current Semester Performance line chart + Risk Factor circle -->
+        <div class="adv-perf-row">
+          <div class="adv-perf-card wide">
+            <div class="adv-card-head">
+              <h3>Current Semester Performance</h3>
+              
+            </div>
+            <table class="adv-course-table" id="semester-table">
+              <thead>
+                <tr>
+                  <th>Course</th>
+                  <th>Grade</th>
+                  <th>Progress</th>
+                  <th>Trend</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for course in current_courses %}
+                <tr>
+                  <td>
+                    <div class="adv-course-cell">
+                      <span class="adv-course-code">{{ course.course_code }}</span>
+                      <span class="adv-course-name">{{ course.course_name }}</span>
+                    </div>
+                  </td>
+                  <td><strong>{{ course.grade }}</strong></td>
+                  <td>
+                    <div class="adv-progress-bar">
+                      <div class="adv-progress-fill" style="width: 80%"></div>
+                    </div>
+                  </td>
+                  <td><span class="adv-trend up"><i class="fa-solid fa-arrow-up"></i></span></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+           <div class="adv-perf-card narrow">
+            <div class="adv-card-head">
+              <h3>Formal Recommendation Editor</h3>
+            </div>
+                <form method="POST" action="{{ url_for('advisor_student_performance_page', sid=student.sid) }}">
+                  <div class="adv-form-editor">
+
+                    <div class="adv-form-field">
+                      <label>INTERVENTION ACTION</label>
+                      <select name="intervention_action" id="intervention-action">
+                        <option>Academic Tutoring Referral</option>
+                        <option>Schedule Meeting</option>
+                        <option>Academic Probation Warning</option>
+                        <option>Peer Mentoring</option>
+                      </select>
+                    </div>
+
+                    <div class="adv-form-field">
+                      <label>RECOMMENDATION BRIEF</label>
+                      <textarea name="recommendation_brief" id="recommendation-brief" placeholder="Draft your recommendation here..."></textarea>
+                    </div>
+
+                    <div class="adv-form-actions">
+                      <button type="reset" class="adv-btn-discard">Discard</button>
+                      <button type="submit" class="adv-btn-submit">Submit Official Report</button>
+                    </div>
+
+                  </div>
+                </form>
+          </div>
+
+<div class="adv-perf-card narrow adv-stacked-cards">
+            <!-- Academic Health Dial -->
+            <!-- Absences Trend  -->
+            <div class="adv-stacked-top">
+              <div class="adv-card-head">
+                <h3>Absences Trend</h3>
+              </div>
+              <div class="adv-absences-chart">
+                <div class="adv-absences-bars">
+
+                {% for course in current_courses %}
+
+                <div class="adv-absence-bar-item">
+
+                  <div class="adv-absence-bar
+
+                    {% if course.absences >= 4 %}
+                      dark
+                    {% elif course.absences >= 2 %}
+                      dashed
+                    {% endif %}
+
+                  "
+
+                  style="height: {{ (course.absences + 1) * 15 }}%">
+                  </div>
+
+                </div>
+
+                {% endfor %}
+
+              </div>
+                              <div class="adv-absences-x-labels">
+
+                {% for course in current_courses %}
+                  <span>{{ course.course_code }}</span>
+                {% endfor %}
+
+              </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+
+
+          
+          
+        </div>
+
+
+        <!-- 3 cards Semester GPA Trends bar chart  + Academic Health Dial circle -->
+        <div class="adv-perf-row">
+          <div class="adv-perf-card wide">
+            <div class="adv-card-head">
+              <h3>Semester GPA Trends</h3>
+              <div class="adv-legend">
+                <span class="adv-legend-item"><span class="adv-legend-dot green"></span> CUMULATIVE</span>
+              </div>
+            </div>
+            <div class="adv-bar-chart" id="semester-bar-chart">
+              <div class="adv-bar-container">
+
+                  {% for semester in transcript[:-1] %}
+
+                    {% set gpa = semester.semester_gpa %}
+
+                    <div class="adv-bar-wrapper">
+
+                      <div class="adv-bar
+                        {% if loop.last %}
+                          highlight
+                        {% endif %}
+                      "
+
+                      style="height: {{ (gpa / 5) * 100 }}%">
+
+                        <span>{{ gpa }}</span>
+
+                      </div>
+
+                      <p>
+                        {{ semester.semester }}
+                      </p>
+
+                    </div>
+
+                  {% endfor %}
+
+                </div>
+            </div>
+          </div>
+          
+          
+          
+          
+            
+
+
+
+
+
+        </div>
+
+    
+
         
 
 
@@ -616,36 +661,7 @@
           </div>
         </div>
 
-          <div class="adv-perf-card narrow">
-            <div class="adv-card-head">
-              <h3>Formal Recommendation Editor</h3>
-            </div>
-                <form method="POST" action="{{ url_for('advisor_student_performance_page', sid=student.sid) }}">
-                  <div class="adv-form-editor">
-
-                    <div class="adv-form-field">
-                      <label>INTERVENTION ACTION</label>
-                      <select name="intervention_action" id="intervention-action">
-                        <option>Academic Tutoring Referral</option>
-                        <option>Schedule Meeting</option>
-                        <option>Academic Probation Warning</option>
-                        <option>Peer Mentoring</option>
-                      </select>
-                    </div>
-
-                    <div class="adv-form-field">
-                      <label>RECOMMENDATION BRIEF</label>
-                      <textarea name="recommendation_brief" id="recommendation-brief" placeholder="Draft your recommendation here..."></textarea>
-                    </div>
-
-                    <div class="adv-form-actions">
-                      <button type="reset" class="adv-btn-discard">Discard</button>
-                      <button type="submit" class="adv-btn-submit">Submit Official Report</button>
-                    </div>
-
-                  </div>
-                </form>
-          </div>
+         
         </div>
 
       </div>
