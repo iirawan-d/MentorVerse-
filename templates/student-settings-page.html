@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='student-settings-page.css') }}">
+  <title>Student Settings</title>
+  <meta name="description" content="Advisor account settings - manage your profile information, credentials, and preferences." />
+  <link rel="stylesheet" href="{{ url_for('static', filename='advisor-settings-page.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='student-dashboard-page.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='advisor-dashboard.css') }}">
-
-  
-  <title>Student Settings</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='advisor-dashboard.css') }}">
 
 </head>
 <body>
+
 
       <!-- Top Navbar -->
       <header class="adv-topbar">
@@ -32,8 +32,8 @@
           </a>
           <div class="adv-user-box">
             <div class="adv-user-info">
-              <h4>Noura Mousa</h4>
-              <p>ID: 202101234</p>
+              <h4>{{ user.Fname }} {{ user.Lname }}</h4>
+              <p>ID: {{ user.student_id }}</p>
             </div>
             <div class="adv-user-avatar">
               <i class="fa-solid fa-user"></i>
@@ -44,8 +44,10 @@
 
 
 
-  <div class="dashboard-shell">
 
+  <div class="as-shell">
+
+    <!-- Sidebar -->
     <aside class="sidebar">
 
       <nav class="side-nav">
@@ -57,149 +59,74 @@
       </nav>
     </aside>
 
-    <main class="main">
+    <!-- Main -->
+    <main class="as-main">
 
-      <section class="page-head">
-        <div class="eyebrow">Student Setting Portal</div>
-        <h1>Account Settings</h1>
-        <p>Manage your profile information, security preferences, and academic targets in one place.</p>
-      </section>
+      <!-- Page Head -->
+      <div class="as-page-head">
+        <p class="as-eyebrow">ADVISOR CONTROL PANEL</p>
+        <h1 class="as-page-title">Account Settings</h1>
+      </div>
 
-      <section class="settings-grid">
-        <div class="left-stack">
-          <div class="card">
-            <h2>Student Profile</h2>
+      <!-- Advisor Profile Card -->
+    <form method="POST" action="{{ url_for('student_settings_page') }}">
+      <div class="as-card">
+        <h2 class="as-card-title">
+          <i class="fa-solid fa-user-pen as-card-title-icon"></i> Student Profile
+        </h2>
 
-            <div class="form-grid">
-              <div class="field">
-                <label>Full Name</label>
-                <input type="text" value="Student Name" />
-              </div>
-
-              <div class="field">
-                <label>Student ID</label>
-                <input type="text" value="202101234" />
-              </div>
-
-              <div class="field full">
-                <label>Email Address</label>
-                <input type="email" value="202101234@stu.jazanu.edu.sa" />
-              </div>
-
-              <div class="field full">
-                <label>Bio</label>
-                <textarea>Passionate computer science student focusing on artificial intelligence, academic advising systems, and ethical digital solutions.</textarea>
-              </div>
-            </div>
-
-            <div class="btn-row">
-              <button class="primary-btn">Update Profile</button>
-            </div>
+        <div class="as-form-grid">
+          <div class="as-field">
+            <label for="first-name">FIRST NAME</label>
+            <input type="text" id="first-name" name="first_name" value="{{ user.Fname }}" />
           </div>
 
-          <div class="card">
-            <h2>Security & Privacy</h2>
+          <div class="as-field">
+            <label for="last-name">LAST NAME</label>
+            <input type="text" id="last-name" name="last_name" value="{{ user.Lname }}" />
+          </div>
 
-            <div class="form-grid">
-              <div class="field full">
-                <label>Current Password</label>
-                <input type="password" value="12345678" />
-              </div>
+          <div class="as-field">
+            <label for="Phone_Number">Phone Number</label>
+            <input type="text" id="Phone_Number" name="Phone_Number" value="{{ user.Phone_Number }}" />
+          </div>
 
-              <div class="field">
-                <label>New Password</label>
-                <input type="password" value="newpassword" />
-              </div>
+          <div class="as-field full">
+            <label for="bio">BIO</label>
+            <textarea id="bio" name="bio">{{ user.bio }}</textarea>
+          </div>
 
-              <div class="field">
-                <label>Confirm New Password</label>
-                <input type="password" value="newpassword" />
-              </div>
-            </div>
-
-            <div class="btn-row">
-              <button class="outline-btn">Change Password</button>
-            </div>
+          <div class="as-field full">
+            <label for="Target_GPA">Target GPA</label>
+            <input type="text" id="Target_GPA" name="Target_GPA" value="{{ user.Target_GPA }}" />
           </div>
         </div>
-<!-- edit -->
-        <div class="right-stack">
-          <div class="mini-card">
-            <h3>Academic Targets</h3>
-            <div class="stat-big">3.82</div>
-            <p>Current GPA with a strong upward trend. Stay focused on your advanced modules to maintain honors status.</p>
-<!-- edit -->
-            <div class="goal-row">
-              <div class="goal-box">
-                <span>Min</span>
-                <strong>4.0</strong>
-              </div>
-              <div class="goal-box">
-                <span>Target</span>
-                <strong>4.9</strong>
-              </div>
-              <div class="goal-box">
-                <span>Max</span>
-                <strong>5.0</strong>
-              </div>
-            </div>
-          </div>
-<!-- edit -->
-          <div class="mini-card">
-            <h3>Career Path</h3>
-            <p style="margin-bottom: 14px;">Primary interests and future industry direction.</p>
 
-            <div class="field full" style="margin-bottom: 14px;">
-              <label>Primary Interests</label>
-              <div class="tag-wrap">
-                <span class="tag">Data Science</span>
-                <span class="tag">Cloud Engineering</span>
-                <span class="tag gray">+ Add Interest</span>
-              </div>
-            </div>
-<!-- edit -->
-            <div class="field full">
-              <label>Target Industry</label>
-              <select>
-                <option>Renewable Energy & Tech</option>
-                <option>Artificial Intelligence</option>
-                <option>Cybersecurity</option>
-                <option>Software Engineering</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="tip-box">
-            <h4>Tip</h4>
-            <p>
-              Complete your academic and career profile to improve mentor matching
-              and unlock more relevant opportunities across the platform.
-            </p>
-          </div>
+        <div class="as-btn-row">
+          <button type="submit" class="as-btn-primary" id="update-profile-btn">Update Student Profile</button>
         </div>
-      </section>
+      </div>
+      </form>
+
     </main>
-  </div>
 
+  </div>
+  
 
   <!-- Footer -->
-  <footer class="fp-footer">
-    <div class="fp-footer-inner">
-      <div class="fp-footer-left">
-        <div class="fp-footer-brand">MentorVerse</div>
-        <p class="fp-footer-copy">
-          &copy; 2026 MENTORVERSE.
-        </p>
+  <footer class="as-footer">
+    <div class="as-footer-inner">
+      <div class="as-footer-left">
+        <div class="as-footer-brand">MentorVerse</div>
+        <p>&copy; 2026 MENTORVERSE.</p>
       </div>
-      <div class="fp-footer-links">
+      <div class="as-footer-links">
             <a href="/Home-page">HOME</a>
             <a href="/faq-page">FAQ</a>
             <a href="/contact-us-page">CONTACT US</a>
-
       </div>
     </div>
   </footer>
-
 
 </body>
 </html>

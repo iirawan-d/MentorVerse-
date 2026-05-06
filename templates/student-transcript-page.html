@@ -31,8 +31,8 @@
           </a>
           <div class="adv-user-box">
             <div class="adv-user-info">
-              <h4>Noura Mousa</h4>
-              <p>ID: 202101234</p>
+              <h4>{{ user.Fname }} {{ user.Lname }}</h4>
+              <p>ID: {{ user.student_id }}</p>
             </div>
             <div class="adv-user-avatar">
               <i class="fa-solid fa-user"></i>
@@ -66,25 +66,25 @@
       <section class="summary-grid">
         <div class="summary-card">
           <h4>Current GPA</h4>
-          <div class="value green">3.82</div>
+          <div class="value green">{{ user.cumulative_gpa }}</div>
           <div class="sub">Excellent academic performance</div>
         </div>
 
         <div class="summary-card">
           <h4>Total Credits</h4>
-          <div class="value blue">101</div>
+          <div class="value blue">{{ total_credits }}</div>
           <div class="sub">Credits successfully completed</div>
         </div>
 
         <div class="summary-card">
           <h4>Completed Courses</h4>
-          <div class="value gold">32</div>
+          <div class="value gold">{{ completed_courses }}</div>
           <div class="sub">Across major and university requirements</div>
         </div>
 
         <div class="summary-card">
           <h4>Academic Standing</h4>
-          <div class="value purple">Good</div>
+          <div class="value purple">{{ academic_standing }}</div>
           <div class="sub">Eligible for next semester registration</div>
         </div>
       </section>
@@ -106,71 +106,75 @@
               </tr>
             </thead>
 
-            <tbody>
-              <tr>
-                <td class="course-code">CS441</td>
-                <td>Artificial Intelligence</td>
-                <td>Semester 1</td>
-                <td><span class="grade-badge grade-a">A</span></td>
-                <td>3</td>
-              </tr>
+              <tbody>
+                {% for semester in transcript %}
+                  {% for course in semester.courses %}
+                  <tr>
+                    <td class="course-code">{{ course.course_code }}</td>
+                    <td>{{ course.course_name }}</td>
+                    <td>{{ semester.semester }}</td>
 
-              <tr>
-                <td class="course-code">CS442</td>
-                <td>Machine Learning</td>
-                <td>Semester 1</td>
-                <td><span class="grade-badge grade-a-plus">A+</span></td>
-                <td>3</td>
-              </tr>
+                    <td>
+                      {% if course.grade == "A+" %}
+                      <span class="grade-badge grade-a-plus">
+                        {{ course.grade }}
+                      </span>
 
-              <tr>
-                <td class="course-code">CS330</td>
-                <td>Database Systems</td>
-                <td>Semester 2</td>
-                <td><span class="grade-badge grade-b-plus">B+</span></td>
-                <td>3</td>
-              </tr>
+                    {% elif course.grade == "A" %}
+                      <span class="grade-badge grade-a">
+                        {{ course.grade }}
+                      </span>
 
-              <tr>
-                <td class="course-code">CS210</td>
-                <td>Data Structures</td>
-                <td>Semester 2</td>
-                <td><span class="grade-badge grade-a">A</span></td>
-                <td>3</td>
-              </tr>
+                    {% elif course.grade == "B+" %}
+                      <span class="grade-badge grade-b-plus">
+                        {{ course.grade }}
+                      </span>
 
-              <tr>
-                <td class="course-code">CS310</td>
-                <td>Operating Systems</td>
-                <td>Semester 3</td>
-                <td><span class="grade-badge grade-b">B</span></td>
-                <td>4</td>
-              </tr>
+                    {% elif course.grade == "B" %}
+                      <span class="grade-badge grade-b">
+                        {{ course.grade }}
+                      </span>
 
-              <tr>
-                <td class="course-code">CS350</td>
-                <td>Computer Networks</td>
-                <td>Semester 3</td>
-                <td><span class="grade-badge grade-a">A</span></td>
-                <td>3</td>
-              </tr>
+                    {% elif course.grade == "C+" %}
+                      <span class="grade-badge grade-c-plus">
+                        {{ course.grade }}
+                      </span>
 
-              <tr>
-                <td class="course-code">MATH301</td>
-                <td>Advanced Linear Algebra</td>
-                <td>Semester 4</td>
-                <td><span class="grade-badge grade-b-plus">B+</span></td>
-                <td>4</td>
-              </tr>
+                    {% elif course.grade == "C" %}
+                      <span class="grade-badge grade-c">
+                        {{ course.grade }}
+                      </span>
 
-              <tr>
-                <td class="course-code">CS402</td>
-                <td>Cloud Computing Architecture</td>
-                <td>Semester 4</td>
-                <td><span class="grade-badge grade-a">A</span></td>
-                <td>3</td>
-              </tr>
-            </tbody>
+                    {% elif course.grade == "D" %}
+                      <span class="grade-badge grade-d-plus">
+                        {{ course.grade }}
+                      </span>
+
+                    {% elif course.grade == "D" %}
+                      <span class="grade-badge grade-d">
+                        {{ course.grade }}
+                      </span>
+
+                    {% elif course.grade == "F" %}
+                      <span class="grade-badge grade-f">
+                        {{ course.grade }}
+                      </span>
+
+                    {% else %}
+                      <span class="grade-badge grade-na">
+                        {{ course.grade }}
+                      </span>
+                    {% endif %}
+                    </td>
+
+                    <td>{{ course.credits }}</td>
+                  </tr>
+                  {% endfor %}
+                {% endfor %}
+              </tbody>
+
+
+
           </table>
         </div>
  
@@ -180,19 +184,19 @@
             <div class="mini-list">
               <div class="mini-row">
                 <span>Major</span>
-                <strong>Computer Science</strong>
+                <strong>{{ user.major }}</strong>
               </div>
               <div class="mini-row">
                 <span>Level</span>
-                <strong>Senior Year</strong>
+                <strong>{{ level }}</strong>
               </div>
               <div class="mini-row">
                 <span>Earned Credits</span>
-                <strong>101 / 132</strong>
+                <strong>{{ total_credits }}</strong>
               </div>
               <div class="mini-row">
                 <span>Last Semester GPA</span>
-                <strong>3.80</strong>
+                <strong>{{ last_semester_gpa }}</strong>
               </div>
             </div>
           </div>

@@ -209,6 +209,8 @@ def register_page():
                 "student_id": university_id,
                 "bio": student_user.get("bio", []),
                 "gender": student_user.get("gender", []),
+                "Target_GPA": student_user.get("Target_GPA", []),
+                "Phone_Number": student_user.get("Phone_Number", []),
                 "role": role,
                 "major": student_user.get("major", []),
                 "advisor_id": "MohammedAli@jazan.edu.sa",
@@ -370,9 +372,44 @@ def student_transcript_page():
 
     user = get_logged_user()
 
+    transcript = user.get("transcript", [])
+
+    total_credits = 0
+    completed_courses = 0
+
+    for semester in transcript:
+        for course in semester.get("courses", []):
+            if course.get("grade") != "NG":
+                total_credits += course.get("credits", 0)
+                completed_courses += 1
+
+    last_semester = transcript[-2] if transcript else {}
+    academic_standing = last_semester.get("academic_standing", "N/A")
+    last_semester_gpa = last_semester.get("semester_gpa", 0)
+    
+    completed_semesters = len(transcript)
+
+    if completed_semesters <= 2:
+        level = "Freshman Year"
+
+    elif completed_semesters <= 4:
+        level = "Sophomore Year"
+
+    elif completed_semesters <= 6:
+        level = "Junior Year"
+
+    else:
+        level = "Senior Year"
+
     return render_template(
         "student-transcript-page.html",
-        transcript=user.get("transcript", [])
+        user=user,
+        transcript=transcript,
+        total_credits=total_credits,
+        completed_courses=completed_courses,
+        academic_standing=academic_standing,
+        last_semester_gpa=last_semester_gpa,
+        level=level
     )
 
 
@@ -381,14 +418,38 @@ def student_transcript_page():
 
 @app.route("/student-schedule-page/")
 def student_schedule_page():
+
     if not student_required():
         return redirect(url_for("login_page"))
 
     user = get_logged_user()
 
+    schedule = user.get("schedule", [])
+
+
+    today_classes = len([
+        item for item in schedule
+        if item["day"] == "Sunday"
+    ])
+
+
+    week_hours = len(schedule)
+
+  
+    next_class = schedule[0] if schedule else None
+
+
+    free_slots = max(0, 20 - len(schedule))
+
+
     return render_template(
         "student-schedule-page.html",
-        schedule=user.get("schedule", [])
+        user=user,
+        schedule=schedule,
+        today_classes=today_classes,
+        week_hours=week_hours,
+        next_class=next_class,
+        free_slots=free_slots
     )
 
 
@@ -416,18 +477,40 @@ def student_notification_page():
 
 
 
-@app.route("/student-settings-page/")
+@app.route("/student-settings-page/", methods=["GET", "POST"])
 def student_settings_page():
+
     if not student_required():
         return redirect(url_for("login_page"))
 
     user = get_logged_user()
 
+    if request.method == "POST":
+
+        fname = request.form.get("first_name")
+        lname = request.form.get("last_name")
+        Phone_Number = request.form.get("Phone_Number")
+        bio = request.form.get("bio")
+        Target_GPA = request.form.get("Target_GPA")
+
+        students.update_one(
+            {"email": user["email"]},
+            {"$set": {
+                "Fname": fname,
+                "Lname": lname,
+                "Phone_Number": Phone_Number,
+                "bio": bio,
+                "Target_GPA": Target_GPA
+            }}
+        )
+
+        flash("student profile updated successfully")
+        return redirect(url_for("student_settings_page"))
+
     return render_template(
         "student-settings-page.html",
         user=user
     )
-
 
 
 
@@ -503,14 +586,40 @@ def advisor_notification_page():
 
 
 
-@app.route("/advisor-settings-page/")
+@app.route("/advisor-settings-page/", methods=["GET", "POST"])
 def advisor_settings_page():
+
     if not advisor_required():
         return redirect(url_for("login_page"))
 
     user = get_logged_user()
 
-    return render_template("advisor-settings-page.html", user=user)
+    if request.method == "POST":
+
+        fname = request.form.get("first_name")
+        lname = request.form.get("last_name")
+        department = request.form.get("department")
+        bio = request.form.get("bio")
+        office = request.form.get("office")
+
+        advisors.update_one(
+            {"email": user["email"]},
+            {"$set": {
+                "Fname": fname,
+                "Lname": lname,
+                "department": department,
+                "bio": bio,
+                "office": office
+            }}
+        )
+
+        flash("Advisor profile updated successfully")
+        return redirect(url_for("advisor_settings_page"))
+
+    return render_template(
+        "advisor-settings-page.html",
+        user=user
+    )
 
 
 

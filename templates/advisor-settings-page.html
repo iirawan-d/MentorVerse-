@@ -32,8 +32,8 @@
           </a>
           <div class="adv-user-box">
             <div class="adv-user-info">
-              <h4>Mohammed Ali</h4>
-              <p>ID: 2085763</p>
+              <h4>{{ user.Fname }} {{ user.Lname }}</h4>
+              <p>ID: {{ user.university_id }}</p>
             </div>
             <div class="adv-user-avatar">
               <i class="fa-solid fa-user"></i>
@@ -67,6 +67,7 @@
       </div>
 
       <!-- Advisor Profile Card -->
+    <form method="POST" action="{{ url_for('advisor_settings_page') }}">
       <div class="as-card">
         <h2 class="as-card-title">
           <i class="fa-solid fa-user-pen as-card-title-icon"></i> Advisor Profile
@@ -74,73 +75,48 @@
 
         <div class="as-form-grid">
           <div class="as-field">
-            <label for="full-name">FULL NAME</label>
-            <input type="text" id="full-name" value="Advisor Name" />
+            <label for="first-name">FIRST NAME</label>
+            <input type="text" id="first-name" name="first_name" value="{{ user.Fname }}" />
           </div>
 
           <div class="as-field">
-            <label for="academic-title">ACADEMIC TITLE</label>
-            <input type="text" id="academic-title" value="Advisor Title" />
+            <label for="last-name">LAST NAME</label>
+            <input type="text" id="last-name" name="last_name" value="{{ user.Lname }}" />
           </div>
 
           <div class="as-field full">
             <label for="department">DEPARTMENT</label>
-            <select id="department">
-              <option selected>Computer Science</option>
-              <option>Mechanical Engineering</option>
-              <option>Business Analytics</option>
-              <option>Architecture</option>
-              <option>Mathematics</option>
-            </select>
+              <select id="department" name="department">
+                <option selected>{{ user.department }}</option>
+                <option>Computer Science</option>
+                <option>Mechanical Engineering</option>
+                <option>Business Analytics</option>
+                <option>Architecture</option>
+                <option>Mathematics</option>
+              </select>
           </div>
 
           <div class="as-field full">
             <label for="bio">BIO</label>
-            <textarea id="bio">Specializing in AI and Machine Learning research. Guiding students for over 12 years.</textarea>
+            <textarea id="bio" name="bio">{{ user.bio }}</textarea>
           </div>
 
           <div class="as-field full">
             <label for="office-location">OFFICE LOCATION</label>
-            <input type="text" id="office-location" value="Building 4, Room 202, Campus" />
+            <input type="text" id="office-location" name="office" value="{{ user.office }}" />
           </div>
         </div>
 
         <div class="as-btn-row">
-          <button class="as-btn-primary" id="update-profile-btn">Update Advisor Profile</button>
+          <button type="submit" class="as-btn-primary" id="update-profile-btn">Update Advisor Profile</button>
         </div>
       </div>
-
-      <!-- Security & Access Card -->
-      <div class="as-card">
-        <h2 class="as-card-title">
-          <i class="fa-solid fa-lock as-card-title-icon"></i> Security & Access
-        </h2>
-
-        <div class="as-form-grid">
-          <div class="as-field full">
-            <label for="current-password">CURRENT PASSWORD</label>
-            <input type="password" id="current-password" value="12345678" />
-          </div>
-
-          <div class="as-field">
-            <label for="new-password">NEW PASSWORD</label>
-            <input type="password" id="new-password" value="newpassword" />
-          </div>
-
-          <div class="as-field">
-            <label for="confirm-password">CONFIRM NEW PASSWORD</label>
-            <input type="password" id="confirm-password" value="newpassword" />
-          </div>
-        </div>
-
-        <div class="as-btn-row">
-          <button class="as-btn-outline" id="update-credentials-btn">Update Credentials</button>
-        </div>
-      </div>
+      </form>
 
     </main>
 
   </div>
+  
 
   <!-- Footer -->
   <footer class="as-footer">

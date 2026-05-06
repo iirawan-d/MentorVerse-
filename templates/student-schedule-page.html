@@ -30,8 +30,8 @@
           </a>
           <div class="adv-user-box">
             <div class="adv-user-info">
-              <h4>Noura Mousa</h4>
-              <p>ID: 202101234</p>
+              <h4>{{ user.Fname }} {{ user.Lname }}</h4>
+              <p>ID: {{ user.student_id }}</p>
             </div>
             <div class="adv-user-avatar">
               <i class="fa-solid fa-user"></i>
@@ -66,26 +66,35 @@
 
       <section class="summary-grid">
         <div class="summary-card">
-          <h4>Today's Classes</h4>
-          <div class="value green">2</div>
+          <span class="pill pill-green">Today's Classes</span>
+          <h4></h4>
+          <div class="value green">{{ today_classes }}</div>
           <div class="sub">Lectures and labs to attende today</div>
         </div>
 
         <div class="summary-card">
-          <h4>This Week Hours</h4>
-          <div class="value blue">18</div>
+          <span class="pill pill-blue">This Week Hours</span>
+          <h4></h4>
+          <div class="value blue">{{ week_hours }}</div>
           <div class="sub">Planned academic hours this week</div>
         </div>
 
         <div class="summary-card">
-          <h4>Next Class</h4>
-          <div class="value gold">10:00</div>
-          <div class="sub">Cloud Computing Architecture</div>
+          <span class="pill pill-sand">Next Class</span>
+          <h4></h4>
+              {% if next_class %}
+              <div class="value gold">{{ next_class.time[:5] }}</div>
+              <div class="sub">{{ next_class.course_name }}</div>
+              {% else %}
+              <div class="value gold">-</div>
+              <div class="sub">No Classes</div>
+              {% endif %}
         </div>
 
         <div class="summary-card">
-          <h4>Free Slots</h4>
-          <div class="value purple">4</div>
+          <span class="pill pill-pink">Free Slots</span>
+          <h4></h4>
+          <div class="value purple">{{ free_slots }}</div>
           <div class="sub">Available for study, tutoring, or meetings</div>
         </div>
       </section>
@@ -107,84 +116,34 @@
               </tr>
             </thead>
 
-            <tbody>
-              <tr>
-                <td>Sunday</td>
-                <td>08:00 - 09:30</td>
-                <td>
-                  <div class="course-name">Artificial Intelligence</div>
-                  <span class="course-code">CS441</span>
-                </td>
-                <td><span class="tag lecture">Lecture</span></td>
-                <td>Room A102</td>
-              </tr>
+<tbody>
+  {% for item in schedule %}
+  <tr>
+    <td>{{ item.day }}</td>
+    <td>{{ item.time }}</td>
+    <td>
+      <div class="course-name">{{ item.course_name }}</div>
+      <span class="course-code">{{ item.course_code }}</span>
+    </td>
 
-              <tr>
-                <td>Sunday</td>
-                <td>10:00 - 11:30</td>
-                <td>
-                  <div class="course-name">Cloud Computing Architecture</div>
-                  <span class="course-code">CS402</span>
-                </td>
-                <td><span class="tag lecture">Lecture</span></td>
-                <td>Room B101</td>
-              </tr>
+    <td>
+      {% if item.type == "Lab" %}
+        <span class="tag lab">{{ item.type }}</span>
+      {% else %}
+        <span class="tag lecture">{{ item.type }}</span>
+      {% endif %}
+    </td>
 
-              <tr>
-                <td>Monday</td>
-                <td>09:00 - 10:30</td>
-                <td>
-                  <div class="course-name">Advanced Linear Algebra</div>
-                  <span class="course-code">MATH301</span>
-                </td>
-                <td><span class="tag lecture">Lecture</span></td>
-                <td>Room 204</td>
-              </tr>
+    <td>{{ item.room }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
 
-              <tr>
-                <td>Monday</td>
-                <td>12:00 - 01:30</td>
-                <td>
-                  <div class="course-name">Machine Learning Lab</div>
-                  <span class="course-code">CS442</span>
-                </td>
-                <td><span class="tag lab">Lab</span></td>
-                <td>Lab 301</td>
-              </tr>
 
-              <tr>
-                <td>Tuesday</td>
-                <td>11:00 - 12:00</td>
-                <td>
-                  <div class="course-name">General Math</div>
-                  <span class="course-code">MATH101</span>
-                </td>
-                <td><span class="tag lecture">Lecture</span></td>
-                <td>Room 102</td>
-              </tr>
 
-              <tr>
-                <td>Wednesday</td>
-                <td>08:00 - 09:30</td>
-                <td>
-                  <div class="course-name">Database Systems</div>
-                  <span class="course-code">CS330</span>
-                </td>
-                <td><span class="tag lecture">Lecture</span></td>
-                <td>Room C104</td>
-              </tr>
 
-              <tr>
-                <td>Thursday</td>
-                <td>01:00 - 02:30</td>
-                <td>
-                  <div class="course-name">General Physics</div>
-                  <span class="course-code">PHYS201</span>
-                </td>
-                <td><span class="tag lab">Lab</span></td>
-                <td>Lab 118</td>
-              </tr>
-            </tbody>
+
+
           </table>
         </div>
  
@@ -192,15 +151,15 @@
           <div class="info-box">
             <h3>Today's Plan</h3>
             <div class="mini-list">
-              <div class="mini-row">
-                <span>08:00 AM</span>
-                <strong>AI Lecture</strong>
-              </div>
-              <div class="mini-row">
-                <span>10:00 AM</span>
-                <strong>Cloud Computing</strong>
-              </div>
-            </div>
+  {% for item in schedule %}
+    {% if item.day == "Sunday" %}
+      <div class="mini-row">
+        <span>{{ item.time }}</span>
+        <strong>{{ item.course_name }}</strong>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
           </div>
         </div>
       </section>

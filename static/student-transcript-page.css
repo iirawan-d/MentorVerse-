@@ -339,6 +339,38 @@
       color: #8d69d4;
     }
 
+    .grade-c-plus {
+  background: #fff3e6;
+  color: #d97706;
+}
+
+.grade-c {
+  background: #ffeaea;
+  color: #dc2626;
+}
+
+.grade-d-plus {
+  background: #fdecec;
+  color: #b91c1c;
+}
+
+.grade-d {
+  background: #fdecec;
+  color: #b91c1c;
+}
+
+.grade-f {
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
+.grade-na {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+
+
     .side-stack {
       display: flex;
       flex-direction: column;
@@ -496,4 +528,7 @@
 .fp-footer-links a:hover {
   color: #137f68;
 }
+
+
+
 
