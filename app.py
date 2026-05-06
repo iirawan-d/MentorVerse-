@@ -523,12 +523,36 @@ def advisor_students_list_page():
         return redirect(url_for("login_page"))
 
     user = get_logged_user()
-    students_list = list(students.find())
+
+    assigned_students = list(students.find({"advisor_id": "ad1"}))
+
+    total_gpa = 0
+    risk_alerts = 0
+
+    for student in assigned_students:
+        gpa = student.get("cumulative_gpa", 0)
+        total_gpa += gpa
+
+        if gpa < 2.5:
+            student["risk"] = "high"
+            risk_alerts += 1
+        elif gpa < 3.5:
+            student["risk"] = "moderate"
+        else:
+            student["risk"] = "stable"
+
+        transcript = student.get("transcript", [])
+        student["last_semester_gpa"] = transcript[-2].get("semester_gpa", 0) if transcript else 0
+        student["year"] = max(1, min(4, len(transcript) // 2))
+
+    average_gpa = round(total_gpa / len(assigned_students), 2) if assigned_students else 0
 
     return render_template(
         "advisor-students-list-page.html",
         user=user,
-        students=students_list
+        students_list=assigned_students,
+        average_gpa=average_gpa,
+        risk_alerts=risk_alerts
     )
 
 
@@ -551,16 +575,96 @@ def advisor_student_performance_cards():
 
 
 
-@app.route("/advisor-student-performance-page/")
-def advisor_student_performance_page():
+@app.route("/advisor-student-performance-page/<sid>", methods=["GET", "POST"])
+def advisor_student_performance_page(sid):
+
     if not advisor_required():
         return redirect(url_for("login_page"))
 
     user = get_logged_user()
 
+    student = students.find_one({
+        "sid": sid,
+        "advisor_id": "ad1"
+    })
+
+    if not student:
+        flash("Student not found")
+        return redirect(url_for("advisor_students_list_page"))
+    
+
+    if request.method == "POST":
+        recommendation = request.form.get("recommendation_brief")
+
+        if recommendation:
+            students.update_one(
+                {"sid": sid},
+                {
+                    "$push": {
+                        "advisor_recommendations": recommendation
+                    }
+                }
+            )
+
+            flash("Recommendation submitted successfully")
+
+        return redirect(url_for("advisor_student_performance_page", sid=sid))
+
+
+
+
+
+
+    transcript = student.get("transcript", [])
+    current_gpa = student.get("cumulative_gpa", 0)
+
+    last_semester = transcript[-2] if len(transcript) >= 2 else {}
+    current_semester = transcript[-1] if transcript else {}
+
+    last_semester_gpa = last_semester.get("semester_gpa", 0)
+    current_courses = current_semester.get("courses", [])
+
+    total_credits = 0
+    total_absences = 0
+
+    for semester in transcript:
+        for course in semester.get("courses", []):
+            if course.get("grade") != "NG":
+                total_credits += course.get("credits", 0)
+            total_absences += course.get("absences", 0)
+
+    if current_gpa < 2.5:
+        risk_level = "HIGH RISK"
+        risk_class = "high"
+        risk_score = "85%"
+    elif current_gpa < 3.5:
+        risk_level = "MODERATE"
+        risk_class = "moderate"
+        risk_score = "45%"
+    else:
+        risk_level = "LOW RISK"
+        risk_class = "stable"
+        risk_score = "12%"
+
+    level = max(1, min(4, len(transcript) // 2))
+    
+
     return render_template(
         "advisor-student-performance-page.html",
-        user=user
+        user=user,
+        student=student,
+        transcript=transcript,
+        current_gpa=current_gpa,
+        last_semester_gpa=last_semester_gpa,
+        current_semester=current_semester,
+        current_courses=current_courses,
+        total_credits=total_credits,
+        total_absences=total_absences,
+        risk_level=risk_level,
+        risk_class=risk_class,
+        risk_score=risk_score,
+        last_semester=last_semester,
+        level=level
     )
 
 

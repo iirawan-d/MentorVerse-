@@ -37,7 +37,12 @@
               <p>ID: {{ user.university_id }}</p>
             </div>
             <div class="adv-user-avatar">
-              <i class="fa-solid fa-user"></i>
+              {% if user.gender == "Male" %}
+                        <img src="{{ url_for('static', filename='images/image_man_profile.png') }}" alt="" class="adv-student-avatar" />
+                      {% else %}
+                        <img src="{{ url_for('static', filename='images/image_girls_profile.png') }}" alt="" class="adv-student-avatar" />
+                      {% endif %}
+            
             </div>
           </div>
         </div>
@@ -71,9 +76,6 @@
             <p class="adv-eyebrow">STUDENT MANAGEMENT</p>
             <h1 class="adv-page-title" id="page-title">Assigned Students Overview</h1>
           </div>
-          <button class="adv-btn-primary" id="bulk-message-btn">
-            <i class="fa-solid fa-envelope"></i> Bulk Message Students
-          </button>
         </div>
 
         <!-- Filter Bar -->
@@ -82,34 +84,20 @@
             <div class="adv-filter-group">
               <span class="adv-filter-label">RISK LEVEL</span>
               <div class="adv-filter-pills">
-                <button class="adv-pill active" id="filter-all">All Students</button>
-                <button class="adv-pill" id="filter-high">High Risk</button>
-                <button class="adv-pill" id="filter-moderate">Moderate</button>
-                <button class="adv-pill" id="filter-stable">Stable</button>
+                <button class="adv-pill " id="filter-all">All Students</button>
+
               </div>
             </div>
-            <div class="adv-filter-group">
-              <span class="adv-filter-label">GPA RANGE</span>
-              <select class="adv-select" id="gpa-range-select">
-                <option>All Ranges</option>
-                <option>Below 2.1</option>
-                <option>2.1 - 2.5</option>
-                <option>2.5 - 3.0</option>
-                <option>3.0 - 3.5</option>
-                <option>3.5 - 4.0</option>
-                <option>4.0 - 4.5</option>
-                <option>4.5 - 5.0</option>
-              </select>
-            </div>
+            
           </div>
           <div class="adv-filter-stats">
             <div class="adv-stat-box">
               <span class="adv-stat-label">AVERAGE GPA</span>
-              <h2 class="adv-stat-value">3.03</h2>
+              <h2 class="adv-stat-value">{{ average_gpa }}</h2>
             </div>
             <div class="adv-stat-box">
               <span class="adv-stat-label">RISK ALERTS</span>
-              <h2 class="adv-stat-value risk">1</h2>
+              <h2 class="adv-stat-value risk">{{ risk_alerts }}</h2>
             </div>
           </div>
         </div>
@@ -128,112 +116,59 @@
               </tr>
             </thead>
             <tbody>
-              <!-- Student 1 -->
-              <tr>
-                <td>
-                  <div class="adv-student-cell">
-                    <img src="..\images\image_man_profile.png" alt="" class="adv-student-avatar" />
-                    <div>
-                      <h4>Mohammed Ahmed</h4>
-                      <p>Computer Science • Year 3</p>
+                {% for student in students_list %}
+                <tr>
+                  <td>
+                    <div class="adv-student-cell">
+                      {% if student.gender == "Male" %}
+                        <img src="{{ url_for('static', filename='images/image_man_profile.png') }}" alt="" class="adv-student-avatar" />
+                      {% else %}
+                        <img src="{{ url_for('static', filename='images/image_girls_profile.png') }}" alt="" class="adv-student-avatar" />
+                      {% endif %}
+
+                      <div>
+                        <h4>{{ student.name }}</h4>
+                        <p>{{ student.major }} • Year {{ student.year }}</p>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="adv-gpa-cell">
-                    <strong>GPA 2.15</strong>
-                    <span>Last Semester: 2.80</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="adv-risk-cell">
-                    <span class="adv-risk-badge high">
-                      <span class="adv-risk-dot high"></span> HIGH RISK
-                    </span>
-                  </div>
-                </td>
-                <td>
-                  <a href="/advisor-student-performance-page" class="adv-view-link" id="view-student-1">View Profile</a>
-                </td>
-              </tr>
-              <!-- Student 2 -->
-              <tr>
-                <td>
-                  <div class="adv-student-cell">
-                    <img src="..\images\image_girls_profile.png" alt="" class="adv-student-avatar" />
-                    <div>
-                      <h4>Noura Mousa</h4>
-                      <p>Computer Science • Year 3</p>
+                  </td>
+
+                  <td>
+                    <div class="adv-gpa-cell">
+                      <strong>GPA {{ student.cumulative_gpa }}</strong>
+                      <span>Last Semester: {{ student.last_semester_gpa }}</span>
                     </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="adv-gpa-cell">
-                    <strong>GPA 3.82</strong>
-                    <span>Last Semester: 3.80</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="adv-risk-cell">
-                    <span class="adv-risk-badge stable">
-                      <span class="adv-risk-dot stable"></span> STABLE
-                    </span>
-                  </div>
-                </td>
-                <td>
-                  <a href="/advisor-student-performance-cards" class="adv-view-link" id="view-student-2">View Profile</a>
-                </td>
-              </tr>
-              <!-- Student 3 -->
-              <tr>
-                <td>
-                  <div class="adv-student-cell">
-                    <img src="..\images\image_girls_profile.png" alt="" class="adv-student-avatar" />
-                    <div>
-                      <h4>Fatima Madkhaly</h4>
-                      <p>Computer Science • Year 4</p>
+                  </td>
+
+                  <td>
+                    <div class="adv-risk-cell">
+                      {% if student.risk == "high" %}
+                        <span class="adv-risk-badge high">
+                          <span class="adv-risk-dot high"></span> HIGH RISK
+                        </span>
+                      {% elif student.risk == "moderate" %}
+                        <span class="adv-risk-badge moderate">
+                          <span class="adv-risk-dot moderate"></span> MODERATE
+                        </span>
+                      {% else %}
+                        <span class="adv-risk-badge stable">
+                          <span class="adv-risk-dot stable"></span> STABLE
+                        </span>
+                      {% endif %}
                     </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="adv-gpa-cell">
-                    <strong>GPA 3.10</strong>
-                    <span>Last Semester: 3.12</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="adv-risk-cell">
-                    <span class="adv-risk-badge moderate">
-                      <span class="adv-risk-dot moderate"></span> MODERATE
-                    </span>
-                  </div>
-                </td>
-                <td>
-                  <a href="/advisor-student-performance-page" class="adv-view-link" id="view-student-3">View Profile</a>
-                </td>
-              </tr>
-              
-            </tbody>
+                  </td>
+
+                  <td>
+                    <a href="{{ url_for('advisor_student_performance_page', sid=student.sid) }}" class="adv-view-link">
+                      View Profile
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
           </table>
 
 
-
-          <!-- Pagination 
-
-          <div class="adv-pagination">
-            <div class="adv-pagination-left">
-              <button class="adv-page-btn" id="prev-page">&lt;</button>
-              <button class="adv-page-btn active" id="page-1">1</button>
-              <button class="adv-page-btn" id="page-2">2</button>
-              <button class="adv-page-btn" id="page-3">3</button>
-              <button class="adv-page-btn" id="next-page">&gt;</button>
-            </div>
-            <span class="adv-pagination-info">SHOWING 1-10 OF 142 RESULTS</span>
-          </div>
-        </div>
-
-
-        -->
       </div>
 
       <!-- Footer -->

@@ -36,7 +36,12 @@
               <p>ID: {{ user.student_id }}</p>
             </div>
             <div class="adv-user-avatar">
-              <i class="fa-solid fa-user"></i>
+              {% if user.gender == "Male" %}
+                        <img src="{{ url_for('static', filename='images/image_man_profile.png') }}" alt="" class="adv-student-avatar" />
+                      {% else %}
+                        <img src="{{ url_for('static', filename='images/image_girls_profile.png') }}" alt="" class="adv-student-avatar" />
+                      {% endif %}
+            
             </div>
           </div>
         </div>

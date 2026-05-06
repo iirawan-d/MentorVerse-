@@ -35,7 +35,12 @@
               <p>ID: {{ user.student_id }}</p>
             </div>
             <div class="adv-user-avatar">
-              <i class="fa-solid fa-user"></i>
+              {% if user.gender == "Male" %}
+                        <img src="{{ url_for('static', filename='images/image_man_profile.png') }}" alt="" class="adv-student-avatar" />
+                      {% else %}
+                        <img src="{{ url_for('static', filename='images/image_girls_profile.png') }}" alt="" class="adv-student-avatar" />
+                      {% endif %}
+            
             </div>
           </div>
         </div>
@@ -201,22 +206,7 @@
             </div>
           </div>
 
-          <div class="status-box">
-            <h3>Academic Standing</h3>
-            <p>
-              You are maintaining strong academic progress and remain on track
-              for graduation. Keep your GPA above 3.80 to preserve honors eligibility.
-            </p>
-            <span class="status-pill">On Track for Graduation</span>
-          </div>
-
-          <div class="info-box">
-            <h3>Quick Notes</h3>
-            <p>
-              Your transcript includes all completed courses up to the current
-              semester. Pending semester grades will appear here once officially approved.
-            </p>
-          </div>
+        
         </div>
       </section>
     </main>

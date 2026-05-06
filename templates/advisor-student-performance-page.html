@@ -37,7 +37,12 @@
               <p>ID: {{ user.university_id }}</p>
             </div>
             <div class="adv-user-avatar">
-              <i class="fa-solid fa-user"></i>
+              {% if user.gender == "Male" %}
+                        <img src="{{ url_for('static', filename='images/image_man_profile.png') }}" alt="" class="adv-student-avatar" />
+                      {% else %}
+                        <img src="{{ url_for('static', filename='images/image_girls_profile.png') }}" alt="" class="adv-student-avatar" />
+                      {% endif %}
+            
             </div>
           </div>
         </div>
@@ -72,19 +77,14 @@
         <div class="adv-profile-header">
           <div class="adv-profile-info">
             <p class="adv-eyebrow light">STUDENT PROFILE ANALYSIS</p>
-            <h1 class="adv-profile-name" id="student-name">Noura Mousa</h1>
+            <h1 class="adv-profile-name" id="student-name">{{ student.name }}</h1>
+
             <div class="adv-profile-meta">
-              <span><i class="fa-solid fa-graduation-cap"></i> Computer Science, Junior Year</span>
-              <span><i class="fa-solid fa-id-card"></i> ID: 202101234</span>
+              <span><i class="fa-solid fa-graduation-cap"></i> {{ student.major }}, Year {{ level }}</span>
+              <span><i class="fa-solid fa-id-card"></i> ID: {{ student.student_id }}</span>
             </div>
           </div>
           <div class="adv-profile-actions">
-            <button class="adv-btn-white" id="download-report-btn">
-              <i class="fa-solid fa-download"></i> Download Report
-            </button>
-            <button class="adv-btn-white-outline" id="contact-student-btn">
-              <i class="fa-solid fa-envelope"></i> Contact Student
-            </button>
           </div>
         </div>
 
@@ -93,35 +93,52 @@
           <div class="adv-perf-stat-card">
             <span class="adv-perf-stat-label">CURRENT GPA</span>
             <div class="adv-perf-stat-row">
-              <h2 class="green-text">3.82</h2>
-              <span class="adv-perf-sub">/4.0</span>
+              <h2 class="green-text">{{ current_gpa }}</h2>
+              <span class="adv-perf-sub">/5.0</span>
             </div>
-            <span class="adv-perf-change up">+0.12 vs last term</span>
+            {% set gpa_change = current_gpa - last_semester_gpa %}
+
+              {% if gpa_change > 0 %}
+                <span class="adv-perf-change up">
+                  +{{ "%.2f"|format(gpa_change) }} vs last term
+                </span>
+
+              {% elif gpa_change < 0 %}
+                <span class="adv-perf-change down">
+                  {{ "%.2f"|format(gpa_change) }} vs last term
+                </span>
+
+              {% else %}
+                <span class="adv-perf-change">
+                  No GPA change
+                </span>
+              {% endif %}
           </div>
           <div class="adv-perf-stat-card">
             <span class="adv-perf-stat-label">RISK SCORE</span>
             <div class="adv-perf-stat-row">
-              <h2 class="green-text">12%</h2>
-              <span class="adv-badge-risk">LOW RISK</span>
+              <h2 class="green-text">{{ risk_score }}</h2>
+              <span class="adv-badge-green">{{ risk_level }}</span>
             </div>
             <span class="adv-perf-change">Stable performance across<br>all core modules</span>
           </div>
           <div class="adv-perf-stat-card">
             <span class="adv-perf-stat-label">ATTENDANCE</span>
             <div class="adv-perf-stat-row">
-              <h2>96.4%</h2>
+              <h2>{{ total_absences }}%</h2>
             </div>
             <div class="adv-perf-mini-bar">
-              <div class="adv-perf-mini-fill" style="width:81%"></div>
+              <div class="adv-perf-mini-fill" style="width:80%"></div>
             </div>
-            <span class="adv-perf-change">81% Completion</span>
+            <span class="adv-perf-change">{{ 100 - total_absences }}% Completion</span>
           </div>
           <div class="adv-perf-stat-card">
             <span class="adv-perf-stat-label">CREDITS EARNED</span>
             <div class="adv-perf-stat-row">
-              <h2>101</h2>
+              <h2>{{ total_credits }}</h2>
               <span class="adv-perf-sub">/130</span>
             </div>
+            <span class="adv-perf-change">{{ (total_credits / 130)*100 }}% Completion</span>
           </div>
         </div>
 
@@ -170,15 +187,12 @@
               <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Predictive Insights</h3>
             </div>
             <div class="adv-insights-list">
+              {% for rec in student.ai_recommendations %}
               <div class="adv-insight-item green">
-                <span class="adv-insight-label">CAREER PATH MATCH</span>
-                <p>Noura scores are high in CS402 suggest a strong aptitude for Data Science roles. Recommendation:
-                  Invite to Research Symposium.</p>
+                <span class="adv-insight-label">AI RECOMMENDATION</span>
+                <p>{{ rec }}</p>
               </div>
-              <div class="adv-insight-item dark">
-                <span class="adv-insight-label">POTENTIAL RISK</span>
-                <p>Slight decline in Mathematics scores. Student may benefit from Academic Tutoring referral.</p>
-              </div>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -188,7 +202,7 @@
           <div class="adv-perf-card wide">
             <div class="adv-card-head">
               <h3>Current Semester Performance</h3>
-              <span class="adv-card-action">View All <i class="fa-solid fa-chevron-right"></i></span>
+              
             </div>
             <table class="adv-course-table" id="semester-table">
               <thead>
@@ -200,51 +214,23 @@
                 </tr>
               </thead>
               <tbody>
+                {% for course in current_courses %}
                 <tr>
                   <td>
                     <div class="adv-course-cell">
-                      <span class="adv-course-code">CS401</span>
-                      <span class="adv-course-name">Artificial Intelligence</span>
+                      <span class="adv-course-code">{{ course.course_code }}</span>
+                      <span class="adv-course-name">{{ course.course_name }}</span>
                     </div>
                   </td>
-                  <td><strong>A</strong></td>
+                  <td><strong>{{ course.grade }}</strong></td>
                   <td>
                     <div class="adv-progress-bar">
-                      <div class="adv-progress-fill" style="width: 92%"></div>
+                      <div class="adv-progress-fill" style="width: 80%"></div>
                     </div>
                   </td>
                   <td><span class="adv-trend up"><i class="fa-solid fa-arrow-up"></i></span></td>
                 </tr>
-                <tr>
-                  <td>
-                    <div class="adv-course-cell">
-                      <span class="adv-course-code">CS405</span>
-                      <span class="adv-course-name">Cloud Computing Architecture</span>
-                    </div>
-                  </td>
-                  <td><strong>A-</strong></td>
-                  <td>
-                    <div class="adv-progress-bar">
-                      <div class="adv-progress-fill" style="width: 85%"></div>
-                    </div>
-                  </td>
-                  <td><span class="adv-trend up"><i class="fa-solid fa-arrow-up"></i></span></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="adv-course-cell">
-                      <span class="adv-course-code">MA301</span>
-                      <span class="adv-course-name">Advanced Linear Algebra</span>
-                    </div>
-                  </td>
-                  <td><strong>B+</strong></td>
-                  <td>
-                    <div class="adv-progress-bar">
-                      <div class="adv-progress-fill gold" style="width: 78%"></div>
-                    </div>
-                  </td>
-                  <td><span class="adv-trend flat"><i class="fa-solid fa-minus"></i></span></td>
-                </tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>
@@ -255,7 +241,7 @@
             <div class="adv-risk-dial">
               <div class="adv-dial-ring">
                 <div class="adv-dial-inner">
-                  <h3>Stable</h3>
+                  <h3>{{ risk_level }}</h3>
                 </div>
               </div>
               <div class="adv-dial-legend">
@@ -277,41 +263,6 @@
         </div>
 
 
-        <!-- 4 cards Second Stats Row -->
-        <div class="adv-perf-stats">
-          <div class="adv-perf-stat-card">
-            <span class="adv-perf-stat-label">CURRENT GPA</span>
-            <div class="adv-perf-stat-row">
-              <h2 class="green-text">3.92</h2>
-              <span class="adv-perf-sub">/4.0</span>
-            </div>
-            <span class="adv-perf-change up"><i class="fa-solid fa-check"></i> +0.12 vs last term</span>
-          </div>
-          <div class="adv-perf-stat-card">
-            <span class="adv-perf-stat-label">RISK LEVEL</span>
-            <div class="adv-perf-stat-row">
-              <h2 class="green-text">Stable</h2>
-              <span class="adv-badge-green">VERY LOW</span>
-            </div>
-            <span class="adv-perf-change">Consistent performance<br>across all metrics</span>
-          </div>
-          <div class="adv-perf-stat-card">
-            <span class="adv-perf-stat-label">CREDITS COMPLETED</span>
-            <div class="adv-perf-stat-row">
-              <h2>104</h2>
-              <span class="adv-perf-sub">/132</span>
-            </div>
-            <span class="adv-perf-change">79% Completion</span>
-          </div>
-          <div class="adv-perf-stat-card">
-            <span class="adv-perf-stat-label">NEXT APPOINTMENT</span>
-            <div class="adv-perf-stat-row">
-              <h2 class="date-text">Oct 24, 2024</h2>
-            </div>
-            <span class="adv-perf-change"><i class="fa-regular fa-calendar"></i> Advising Session</span>
-          </div>
-        </div>
-
         <!-- 3 cards Semester GPA Trends bar chart  + Academic Health Dial circle -->
         <div class="adv-perf-row">
           <div class="adv-perf-card wide">
@@ -323,39 +274,34 @@
             </div>
             <div class="adv-bar-chart" id="semester-bar-chart">
               <div class="adv-bar-container">
-                <div class="adv-bar-wrapper">
-                  <div class="adv-bar" style="height: 55%"><span>3.1</span></div>
-                  <p>YEAR 1 (F)</p>
+
+                  {% for semester in transcript[:-1] %}
+
+                    {% set gpa = semester.semester_gpa %}
+
+                    <div class="adv-bar-wrapper">
+
+                      <div class="adv-bar
+                        {% if loop.last %}
+                          highlight
+                        {% endif %}
+                      "
+
+                      style="height: {{ (gpa / 5) * 100 }}%">
+
+                        <span>{{ gpa }}</span>
+
+                      </div>
+
+                      <p>
+                        {{ semester.semester }}
+                      </p>
+
+                    </div>
+
+                  {% endfor %}
+
                 </div>
-                <div class="adv-bar-wrapper">
-                  <div class="adv-bar" style="height: 58%"><span>3.2</span></div>
-                  <p>YEAR 1 (S)</p>
-                </div>
-                <div class="adv-bar-wrapper">
-                  <div class="adv-bar" style="height: 62%"><span>3.35</span></div>
-                  <p>YEAR 2 (F)</p>
-                </div>
-                <div class="adv-bar-wrapper">
-                  <div class="adv-bar" style="height: 66%"><span>3.5</span></div>
-                  <p>YEAR 2 (S)</p>
-                </div>
-                <div class="adv-bar-wrapper">
-                  <div class="adv-bar" style="height: 72%"><span>3.6</span></div>
-                  <p>YEAR 3 (F)</p>
-                </div>
-                <div class="adv-bar-wrapper">
-                  <div class="adv-bar" style="height: 78%"><span>3.72</span></div>
-                  <p>YEAR 3 (S)</p>
-                </div>
-                <div class="adv-bar-wrapper">
-                  <div class="adv-bar" style="height: 84%"><span>3.82</span></div>
-                  <p>YEAR 4 (F)</p>
-                </div>
-                <div class="adv-bar-wrapper">
-                  <div class="adv-bar highlight" style="height: 92%"><span>3.92</span></div>
-                  <p>YEAR 4 (S)</p>
-                </div>
-              </div>
             </div>
           </div>
           
@@ -371,8 +317,10 @@
                 <div class="adv-donut small">
                   <div class="adv-donut-inner small">
                     <div>
-                      <h3>88%</h3>
-                      <span class="adv-donut-label">OPTIMAL</span>
+                      <h3>{{ 100 - total_absences }}%</h3>
+                      <span class="adv-donut-label">
+                        {{ current_semester.academic_standing }}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -386,42 +334,43 @@
 
 
 
-            <!-- Absences Trend (8 Weeks) -->
+            <!-- Absences Trend  -->
             <div class="adv-stacked-bottom">
               <div class="adv-card-head">
-                <h3>Absences Trend (8 Weeks)</h3>
+                <h3>Absences Trend</h3>
               </div>
               <div class="adv-absences-chart">
                 <div class="adv-absences-bars">
-                  <div class="adv-absence-bar-item">
-                    <div class="adv-absence-bar" style="height: 15%"></div>
+
+                {% for course in current_courses %}
+
+                <div class="adv-absence-bar-item">
+
+                  <div class="adv-absence-bar
+
+                    {% if course.absences >= 4 %}
+                      dark
+                    {% elif course.absences >= 2 %}
+                      dashed
+                    {% endif %}
+
+                  "
+
+                  style="height: {{ (course.absences + 1) * 15 }}%">
                   </div>
-                  <div class="adv-absence-bar-item">
-                    <div class="adv-absence-bar dashed" style="height: 20%"></div>
-                  </div>
-                  <div class="adv-absence-bar-item">
-                    <div class="adv-absence-bar" style="height: 25%"></div>
-                  </div>
-                  <div class="adv-absence-bar-item">
-                    <div class="adv-absence-bar" style="height: 18%"></div>
-                  </div>
-                  <div class="adv-absence-bar-item">
-                    <div class="adv-absence-bar" style="height: 22%"></div>
-                  </div>
-                  <div class="adv-absence-bar-item">
-                    <div class="adv-absence-bar" style="height: 20%"></div>
-                  </div>
-                  <div class="adv-absence-bar-item">
-                    <div class="adv-absence-bar" style="height: 16%"></div>
-                  </div>
-                  <div class="adv-absence-bar-item">
-                    <div class="adv-absence-bar dark" style="height: 70%"></div>
-                  </div>
+
                 </div>
-                <div class="adv-absences-x-labels">
-                  <span>W1</span>
-                  <span>W8</span>
-                </div>
+
+                {% endfor %}
+
+              </div>
+                              <div class="adv-absences-x-labels">
+
+                {% for course in current_courses %}
+                  <span>{{ course.course_code }}</span>
+                {% endfor %}
+
+              </div>
               </div>
             </div>
           </div>
@@ -431,7 +380,7 @@
         <div class="adv-perf-row">
           <div class="adv-perf-card wide">
             <div class="adv-card-head">
-              <h3>Current Academic Modules &amp; Trends</h3>
+              <h3>Last Semester Academic Modules &amp; Trends</h3>
               <div class="adv-legend">
                 <span class="adv-legend-item"><span class="adv-legend-dot green"></span> INCREASING</span>
                 <span class="adv-legend-item"><span class="adv-legend-dot red"></span> DECREASING</span>
@@ -448,55 +397,113 @@
                 </tr>
               </thead>
               <tbody>
+
+                {% set last_courses = last_semester.courses if last_semester else [] %}
+
+                {% for course in last_courses %}
+
                 <tr>
+
                   <td>
                     <div class="adv-module-cell">
-                      <strong>Structural Design II</strong>
-                      <span>CORE • 4 CREDITS</span>
+
+                      <strong>{{ course.course_name }}</strong>
+
+                      <span>
+                        {{ last_semester.semester }} • {{ course.credits }} CREDITS
+                      </span>
+
                     </div>
                   </td>
-                  <td><span class="adv-type-badge technical">TECHNICAL</span></td>
+
                   <td>
+
+                    {% if "Lab" in course.course_name %}
+
+                      <span class="adv-type-badge experimental">
+                        LAB
+                      </span>
+
+                    {% elif "Math" in course.course_name or "Calculus" in course.course_name or "Statistics" in course.course_name %}
+
+                      <span class="adv-type-badge mathematics">
+                        MATHEMATICS
+                      </span>
+
+                    {% else %}
+
+                      <span class="adv-type-badge technical">
+                        TECHNICAL
+                      </span>
+
+                    {% endif %}
+
+                  </td>
+
+                  <td>
+
                     <div class="adv-progress-bar wide-bar">
-                      <div class="adv-progress-fill" style="width: 88%"></div>
+
+                      {% if course.grade == "A+" %}
+                        <div class="adv-progress-fill" style="width:100%"></div>
+
+                      {% elif course.grade == "A" %}
+                        <div class="adv-progress-fill" style="width:90%"></div>
+
+                      {% elif course.grade == "B+" %}
+                        <div class="adv-progress-fill gold" style="width:80%"></div>
+
+                      {% elif course.grade == "B" %}
+                        <div class="adv-progress-fill gold" style="width:70%"></div>
+
+                      {% elif course.grade == "C+" %}
+                        <div class="adv-progress-fill red" style="width:60%"></div>
+
+                      {% else %}
+                        <div class="adv-progress-fill red" style="width:50%"></div>
+                      {% endif %}
+
                     </div>
+
                   </td>
-                  <td><span class="adv-trend-val up"><i class="fa-solid fa-arrow-trend-up"></i> +1.2</span></td>
-                  <td><strong class="adv-grade">A+</strong></td>
+
+                  <td>
+
+                    {% if course.grade in ["A+", "A"] %}
+
+                      <span class="adv-trend-val up">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                      </span>
+
+                    {% elif course.grade in ["B+", "B"] %}
+
+                      <span class="adv-trend-val flat">
+                        <i class="fa-solid fa-minus"></i>
+                      </span>
+
+                    {% else %}
+
+                      <span class="adv-trend-val down">
+                        <i class="fa-solid fa-arrow-trend-down"></i>
+                      </span>
+
+                    {% endif %}
+
+                  </td>
+
+                  <td>
+
+                    <strong class="adv-grade">
+                      {{ course.grade }}
+                    </strong>
+
+                  </td>
+
                 </tr>
-                <tr>
-                  <td>
-                    <div class="adv-module-cell">
-                      <strong>Differential Equations</strong>
-                      <span>THEORY • 3 CREDITS</span>
-                    </div>
-                  </td>
-                  <td><span class="adv-type-badge mathematics">MATHEMATICS</span></td>
-                  <td>
-                    <div class="adv-progress-bar wide-bar">
-                      <div class="adv-progress-fill" style="width: 72%"></div>
-                    </div>
-                  </td>
-                  <td><span class="adv-trend-val down"><i class="fa-solid fa-arrow-trend-down"></i> -0.8</span></td>
-                  <td><strong class="adv-grade">B+</strong></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="adv-module-cell">
-                      <strong>Computational Physics</strong>
-                      <span>LAB • 3 CREDITS</span>
-                    </div>
-                  </td>
-                  <td><span class="adv-type-badge experimental">EXPERIMENTAL</span></td>
-                  <td>
-                    <div class="adv-progress-bar wide-bar">
-                      <div class="adv-progress-fill" style="width: 82%"></div>
-                    </div>
-                  </td>
-                  <td><span class="adv-trend-val up"><i class="fa-solid fa-arrow-trend-up"></i> +2.4</span></td>
-                  <td><strong class="adv-grade">A</strong></td>
-                </tr>
-              </tbody>
+
+                {% endfor %}
+
+                </tbody>
             </table>
           </div>
 
@@ -512,7 +519,9 @@
               <div class="adv-compare-item">
                 <div class="adv-compare-head">
                   <span>Last Term</span>
-                  <span class="adv-compare-gpa">GPA: 3.80</span>
+                  <span class="adv-compare-gpa">
+                    GPA: {{ last_semester_gpa }}
+                  </span>
                 </div>
                 <div class="adv-progress-bar">
                   <div class="adv-progress-fill green-bar" style="width: 76%"></div>
@@ -521,7 +530,9 @@
               <div class="adv-compare-item">
                 <div class="adv-compare-head">
                   <span>Current Term</span>
-                  <span class="adv-compare-gpa">GPA: 3.92</span>
+                  <span class="adv-compare-gpa">
+                    GPA: {{ current_gpa }}
+                  </span>
                 </div>
                 <div class="adv-progress-bar">
                   <div class="adv-progress-fill green-bar" style="width: 85%"></div>
@@ -534,11 +545,15 @@
 
               <div class="adv-compare-stats">
                 <div class="adv-compare-stat">
-                  <h3 class="green-text">+3.1%</h3>
+                  {% set growth = ((current_gpa - last_semester_gpa) / last_semester_gpa * 100) if last_semester_gpa > 0 else 0 %}
+
+                    <h3 class="green-text">
+                      {{ "%.1f"|format(growth) }}%
+                    </h3>
                   <span>GROWTH</span>
                 </div>
                 <div class="adv-compare-stat">
-                  <h3>94%</h3>
+                  <h3>{{ 100 - total_absences }}%</h3>
                   <span>RETENTION</span>
                 </div>
               </div>
@@ -546,44 +561,16 @@
           </div>
         </div>
 
-        <!-- 2 cards Core Competency Map + Weekly Study Density -->
+        
+
+
+
+
+
+        <!-- 2 cards Advisor Case Notes + Formal Recommendation Editor -->
         <div class="adv-perf-row">
           <div class="adv-perf-card wide">
-            <div class="adv-card-head">
-              <h3>Core Competency Map</h3>
-            </div>
-            <div class="adv-competency-list">
-              <div class="adv-competency-item">
-                <div class="adv-competency-head">
-                  <span class="adv-competency-name">Problem Solving</span>
-                  <span class="adv-competency-level green-text">Pro (92%)</span>
-                </div>
-                <div class="adv-progress-bar wide-bar">
-                  <div class="adv-progress-fill" style="width: 92%"></div>
-                </div>
-              </div>
-              <div class="adv-competency-item">
-                <div class="adv-competency-head">
-                  <span class="adv-competency-name">Algorithmic Design</span>
-                  <span class="adv-competency-level">Mid (74%)</span>
-                </div>
-                <div class="adv-progress-bar wide-bar">
-                  <div class="adv-progress-fill gold" style="width: 74%"></div>
-                </div>
-              </div>
-              <div class="adv-competency-item">
-                <div class="adv-competency-head">
-                  <span class="adv-competency-name">Technical Communication</span>
-                  <span class="adv-competency-level green-text">Expert (88%)</span>
-                </div>
-                <div class="adv-progress-bar wide-bar">
-                  <div class="adv-progress-fill" style="width: 88%"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
+            
 
 
           <div class="adv-perf-card narrow">
@@ -592,92 +579,72 @@
             </div>
             <div class="adv-study-chart">
               <div class="adv-study-bars">
-                <div class="adv-study-bar-item">
-                  <div class="adv-study-bar" style="height: 55%"></div>
-                  <span>MON</span>
-                </div>
-                <div class="adv-study-bar-item">
-                  <div class="adv-study-bar" style="height: 45%"></div>
-                  <span>TUE</span>
-                </div>
-                <div class="adv-study-bar-item">
-                  <div class="adv-study-bar teal" style="height: 80%"></div>
-                  <span>WED</span>
-                </div>
-                <div class="adv-study-bar-item">
-                  <div class="adv-study-bar teal" style="height: 90%"></div>
-                  <span>THU</span>
-                </div>
-                <div class="adv-study-bar-item">
-                  <div class="adv-study-bar" style="height: 65%"></div>
-                  <span>FRI</span>
-                </div>
-                <div class="adv-study-bar-item">
-                  <div class="adv-study-bar light" style="height: 40%"></div>
-                  <span>SAT</span>
-                </div>
-                <div class="adv-study-bar-item">
-                  <div class="adv-study-bar light" style="height: 30%"></div>
-                  <span>SUN</span>
-                </div>
+
+                {% set days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"] %}
+
+                {% for day in days %}
+
+                  {% set count = namespace(value=0) %}
+
+                  {% for item in student.schedule %}
+                    {% if item.day == day %}
+                      {% set count.value = count.value + 1 %}
+                    {% endif %}
+                  {% endfor %}
+
+                  <div class="adv-study-bar-item">
+
+                    <div class="adv-study-bar
+                      {% if count.value >= 4 %}
+                        teal
+                      {% elif count.value <= 1 %}
+                        light
+                      {% endif %}
+                    "
+
+                    style="height: {{ count.value * 20 }}%">
+                    </div>
+
+                    <span>{{ day[:3]|upper }}</span>
+
+                  </div>
+
+                {% endfor %}
+
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 2 cards Advisor Case Notes + Formal Recommendation Editor -->
-        <div class="adv-perf-row">
-          <div class="adv-perf-card wide">
-            <div class="adv-card-head">
-              <h3>Advisor Case Notes</h3>
-              <span class="adv-card-action"><i class="fa-solid fa-circle-plus"></i> ADD NEW ENTRY</span>
-            </div>
-            <div class="adv-notes-list">
-              <div class="adv-note-item">
-                <div class="adv-note-head">
-                  <span class="adv-note-date">March 12, 2024</span>
-                  <span class="adv-note-tag orange">Mid-Term Review</span>
-                </div>
-                <p>&ldquo;Discussed career aspirations in AI. Student is very motivated but feels overwhelmed by the
-                  heavy math load this semester. Provided resource links for Linear Algebra.&rdquo;</p>
-              </div>
-              <div class="adv-note-item">
-                <div class="adv-note-head">
-                  <span class="adv-note-date">January 15, 2024</span>
-                  <span class="adv-note-tag green">Introductory Meeting</span>
-                </div>
-                <p>&ldquo;Confirmed final year project topic: 'Ethical Implications of LLMs in Arabic Education'.
-                  Approval pending from department head.&rdquo;</p>
-              </div>
-            </div>
-          </div>
-
-
-
-
           <div class="adv-perf-card narrow">
             <div class="adv-card-head">
               <h3>Formal Recommendation Editor</h3>
             </div>
-            <div class="adv-form-editor">
-              <div class="adv-form-field">
-                <label>INTERVENTION ACTION</label>
-                <select id="intervention-action">
-                  <option>Academic Tutoring Referral</option>
-                  <option>Schedule Meeting</option>
-                  <option>Academic Probation Warning</option>
-                  <option>Peer Mentoring</option>
-                </select>
-              </div>
-              <div class="adv-form-field">
-                <label>RECOMMENDATION BRIEF</label>
-                <textarea id="recommendation-brief" placeholder="Draft your recommendation here..."></textarea>
-              </div>
-              <div class="adv-form-actions">
-                <button class="adv-btn-discard" id="discard-btn">Discard</button>
-                <button class="adv-btn-submit" id="submit-report-btn">Submit Official Report</button>
-              </div>
-            </div>
+                <form method="POST" action="{{ url_for('advisor_student_performance_page', sid=student.sid) }}">
+                  <div class="adv-form-editor">
+
+                    <div class="adv-form-field">
+                      <label>INTERVENTION ACTION</label>
+                      <select name="intervention_action" id="intervention-action">
+                        <option>Academic Tutoring Referral</option>
+                        <option>Schedule Meeting</option>
+                        <option>Academic Probation Warning</option>
+                        <option>Peer Mentoring</option>
+                      </select>
+                    </div>
+
+                    <div class="adv-form-field">
+                      <label>RECOMMENDATION BRIEF</label>
+                      <textarea name="recommendation_brief" id="recommendation-brief" placeholder="Draft your recommendation here..."></textarea>
+                    </div>
+
+                    <div class="adv-form-actions">
+                      <button type="reset" class="adv-btn-discard">Discard</button>
+                      <button type="submit" class="adv-btn-submit">Submit Official Report</button>
+                    </div>
+
+                  </div>
+                </form>
           </div>
         </div>
 
