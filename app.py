@@ -172,35 +172,54 @@ def register_page():
             flash("User already exists")
             return redirect(url_for("register_page"))
 
-        user = {
-            "firstName": firstname,
-            "lastName": lastname,
-            "email": email,
-            "student_id": university_id,
-            "password": generate_password_hash(password),
-            "role": role   
-        }
+
+        test_students = db["test_student"]
+        student_user = test_students.find_one({"sid": "1"})
+        test_advisors = db["test_advisor"]
+        advisor_user  = test_advisors.find_one({"aid": "1"})
 
         if role == "advisor":
-                    
-            inserted_user = {
 
-            "aid": "ad",
-            "Fname": firstname,
-            "Lname": lastname,
-            "email": email,
-            "advisor_id": university_id,
-            "password": generate_password_hash(password),
-            "advisor_students": ["st1", "st2", "st3"],
-            "role": role ,
-            "office": "Building A, Room 101",
-            "bio": "Senior lecturer in AI and software engineering with 10 years of teaching experience.",
-            "gender": "Female"  
-
+            user = {
+                "aid": "test",
+                "Fname": firstname,
+                "Lname": lastname,
+                "email": email,
+                "university_id": university_id,
+                "password": generate_password_hash(password),
+                "role": role,  
+                "department": advisor_user.get("department", []),
+                "advisor_students": advisor_user.get("advisor_students", []),
+                "office": advisor_user.get("office", []),
+                "bio": advisor_user.get("bio", []),
+                "gender": advisor_user.get("gender", []),
+                "notifications": advisor_user.get("notifications", [])
             }
 
             advisors.insert_one(user)
+
         else:
+
+            user = {
+                "sid": "test",
+                "Fname": firstname,
+                "Lname": lastname,
+                "email": email,
+                "password": generate_password_hash(password),
+                "student_id": university_id,
+                "bio": student_user.get("bio", []),
+                "gender": student_user.get("gender", []),
+                "role": role,
+                "major": student_user.get("major", []),
+                "advisor_id": "MohammedAli@jazan.edu.sa",
+                "cumulative_gpa": student_user.get("cumulative_gpa", []),
+                "transcript": student_user.get("transcript", []),
+                "schedule": student_user.get("schedule", []),
+                "advisor_recommendations": student_user.get("advisor_recommendations", []),
+                "ai_recommendations": student_user.get("ai_recommendations", []),
+                "notifications": student_user.get("notifications", [])
+            }
+
             students.insert_one(user)
 
         print(user)  
@@ -224,7 +243,11 @@ def forgot_password_page():
         if step == "email":
             email = request.form.get("email")
 
-            user = students.find_one({"email": email})
+            student_user = students.find_one({"email": email})
+            advisor_user = advisors.find_one({"email": email})
+
+            user = student_user or advisor_user
+            
             if not user:
                 flash("No account found with this email")
                 return redirect(url_for("forgot_password_page"))
@@ -281,12 +304,19 @@ def forgot_password_page():
             if not email:
                 return redirect(url_for("forgot_password_page"))
 
-            students.update_one(
-                {"email": email},
-                {"$set": {
-                    "password": generate_password_hash(password)
-                }}
-            )
+            hashed_password = generate_password_hash(password)
+
+            if students.find_one({"email": email}):
+                students.update_one(
+                    {"email": email},
+                    {"$set": {"password": hashed_password}}
+                )
+            
+            elif advisors.find_one({"email": email}):
+                advisors.update_one(
+                    {"email": email},
+                    {"$set": {"password": hashed_password}}
+                )
 
             # cleanup
             reset_pins.pop(email, None)
@@ -368,14 +398,18 @@ def student_schedule_page():
 
 @app.route("/student-notification-page/")
 def student_notification_page():
+
     if not student_required():
         return redirect(url_for("login_page"))
 
     user = get_logged_user()
 
+    notifications = user.get("notifications", [])
+
     return render_template(
         "student-notification-page.html",
-        user=user
+        user=user,
+        notifications=notifications
     )
 
 
@@ -458,11 +492,13 @@ def advisor_notification_page():
 
     user = get_logged_user()
 
+    notifications = user.get("notifications", [])
+
     return render_template(
         "advisor-notification-page.html",
-        user=user
+        user=user,
+        notifications=notifications
     )
-
 
 
 

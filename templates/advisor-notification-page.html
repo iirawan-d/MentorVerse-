@@ -25,7 +25,9 @@
         </div>
         </div>
         <div class="adv-topbar-right">
-          <button class="adv-icon-btn" id="notif-btn"><i class="fa-solid fa-bell"></i></button>
+          <a href="{{ url_for('logout') }}">
+          <button class="adv-icon-btn" id="notif-btn"><i class="fa-solid fa-right-from-bracket"></i></button>
+          </a>
           <div class="adv-user-box">
             <div class="adv-user-info">
               <h4>Mohammed Ali</h4>
@@ -73,9 +75,7 @@
             <div class="adv-filter-group">
               <span class="adv-filter-label">FILTER NOTIFICATIONS</span>
               <div class="adv-filter-pills">
-                <button class="adv-pill active" id="filter-all">All Notification</button>
-                <button class="adv-pill" id="filter-high">Unread Notification</button>
-                <button class="adv-pill" id="filter-moderate">High Priority Notification</button>
+                <button class="adv-pill" id="filter-all">All Notification</button>
               </div>
             </div>
           </div>
@@ -90,124 +90,55 @@
               </tr>
             </thead>
             <tbody>
-              <!-- NOTIFICATIONS 1 -->
+
+              {% for notification in notifications %}
+
               <tr>
                 <td>
                   <div class="adv-student-cell">
                     <div>
-                      <h4>Student GPA Decrease</h4>
-                      <p>One of your assigned students has experienced a drop in GPA. Review their records and provide guidance.</p>
+                      <h4>{{ notification.title|upper  }}</h4>
+                      <p>{{ notification.message }}</p>
                     </div>
                   </div>
                 </td>
+
                 <td>
                   <div class="adv-risk-cell">
-                    <span class="adv-risk-badge high">
-                      <span class="adv-risk-dot high"></span> HIGH PRIORITY
-                    </span>
-                  </div>
-                </td>
-              </tr>             
-            <!-- NOTIFICATIONS 2 -->
-                    
-              <tr>
-                <td>
-                  <div class="adv-student-cell">
-                    <div>
-                      <h4>Low Attendance Alert</h4>
-                      <p>A student under your supervision has recorded attendance below the acceptable threshold.</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="adv-risk-cell">
-                    <span class="adv-risk-badge moderate">
-                      <span class="adv-risk-dot moderate"></span> MODERATE PRIORITY
-                    </span>
-                  </div>
-                </td>
-              </tr>
-               <!-- NOTIFICATIONS 3 -->
-                    
-              <tr>
-                <td>
-                  <div class="adv-student-cell">
-                    <div>
-                      <h4>Significant Performance Change</h4>
-                      <p>A noticeable change in a student’s academic performance has been detected. Further evaluation is recommended.</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="adv-risk-cell">
-                    <span class="adv-risk-badge stable">
-                      <span class="adv-risk-dot stable"></span> LOW PRIORITY
-                    </span>
-                  </div>
-                </td>
-              </tr>
-                
-               <!-- NOTIFICATIONS 4 -->
-                    
-              <tr>
-                <td>
-                  <div class="adv-student-cell">
-                    <div>
-                      <h4>Sudden Performance Decline</h4>
-                      <p>A significant drop in recent academic performance has been detected. Investigation is advised.</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="adv-risk-cell">
-                    <span class="adv-risk-badge high">
-                      <span class="adv-risk-dot high"></span> HIGH PRIORITY
-                    </span>
+
+                    {% if notification.priority == "urgent" or notification.priority == "high" %}
+
+                      <span class="adv-risk-badge high">
+                        <span class="adv-risk-dot high"></span>
+                        {{ notification.priority|upper  }} PRIORITY
+                      </span>
+
+                    {% elif notification.priority == "medium" %}
+
+                      <span class="adv-risk-badge moderate">
+                        <span class="adv-risk-dot moderate"></span>
+                        MODERATE PRIORITY
+                      </span>
+
+                    {% else %}
+
+                      <span class="adv-risk-badge stable">
+                        <span class="adv-risk-dot stable"></span>
+                        LOW PRIORITY
+                      </span>
+
+                    {% endif %}
+
                   </div>
                 </td>
               </tr>
 
-               <!-- NOTIFICATIONS 5 -->
-                    
-              <tr>
-                <td>
-                  <div class="adv-student-cell">
-                    <div>
-                      <h4>Consistent High Performance Noted</h4>
-                      <p>A student has demonstrated consistently strong academic performance. Consider advanced guidance opportunities.</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="adv-risk-cell">
-                    <span class="adv-risk-badge stable">
-                      <span class="adv-risk-dot stable"></span> LOW PRIORITY
-                    </span>
-                  </div>
-                </td>
-              </tr>
-
-               <!-- NOTIFICATIONS 6 -->
-                    
-              <tr>
-                <td>
-                  <div class="adv-student-cell">
-                    <div>
-                      <h4>Course Failure Recorded</h4>
-                      <p>A student has failed a course based on final grading results. Academic intervention is recommended.</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="adv-risk-cell">
-                    <span class="adv-risk-badge high">
-                      <span class="adv-risk-dot high"></span> HIGH PRIORITY
-                    </span>
-                  </div>
-                </td>
-              </tr>
+              {% endfor %}
 
             </tbody>
+
+
+
           </table>
         </div>
       </div>
